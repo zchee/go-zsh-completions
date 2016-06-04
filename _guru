@@ -1,0 +1,45 @@
+#compdef guru
+
+_guru() {
+
+  __go_packages() {
+    local gopaths
+    declare -a gopaths
+    gopaths=("${(s/:/)$(go env GOPATH)}")
+    gopaths+=("$(go env GOROOT)")
+    for p in $gopaths; do
+      _path_files -W "$p/src" -/
+    done
+  }
+
+  case ${words[1]} in
+    guru)
+      _arguments \
+        '-cpuprofile:write cpu profile to file:_file' \
+        '-json:emit output in JSON format' \
+        '-modified:read archive of modified files from standard input' \
+        '-scope:comma-separated list of packages the analysis should be limited to:__go_packages' \
+        '-ptalog:write points-to analysis log to file:_file' \
+        '-reflect[analyze reflection soundly (slow)]' \
+        '-tags[a list of build tags to consider satisfied during the build]:tags' \
+      ;;
+
+    *)
+      if compset -P '[^./][^/]\#'; then
+        _files && ret=0
+      elif compset -P '\#*'; then
+        _wanted 'offset' && ret=0
+      else
+        _alternative \
+            'files:: _files' \
+            'hosts:remote host name:_ssh_hosts -r: -S:' \
+            'users:user:_ssh_users -qS@' && ret=0
+      fi
+      ;;
+  esac
+}
+
+
+_guru
+
+# vim:filetype=zsh:softtabstop=4:shiftwidth=4:tabstop=4

@@ -1,0 +1,47 @@
+#compdef pt
+
+_pt() {
+  local -a flag_output flag_search
+
+  flag_output=(
+    '--color:Print color codes in results \(default\: true\)'
+    '--nocolor:Dont print color codes in results \(default\: false\)'
+    '--color-line-number:Color codes for line numbers \(default\: 1;33\)'
+    '--color-path:Color codes for path names \(default\: 1;32\)'
+    '--color-match:Color codes for result matches \(default\: 30;43\)'
+    '--group:Print file name at header \(default\: true\)'
+    '--nogroup:Dont print file name at header \(default\: false\)'
+    '--column:Print column \(default\: false\)'
+    {-A,--after}:'Print lines after match'
+    {-B,--before}:'Print lines before match'
+    {-C,--context}:'Print lines before and after match'
+    {-l,--files-with-matches}:'Only print filenames that contain matches'
+    {-c,--count}:'Only print the number of matching lines for each input file.'
+    {-o,--output-encode}:'Specify output encoding \(none, jis, sjis, euc\)'
+  )
+
+  flag_search=(
+    '-e:Parse PATTERN as a re2 regular expression \(default\: false\)'
+    {-i,--ignore-case}':Match case insensitively'
+    {-S,--smart-case}':Match case insensitively unless PATTERN contains uppercase characters'
+    {-w,--word-regexp}':Only match whole words'
+    '--ignore:Ignore files/directories matching pattern'
+    '--vcs-ignore:VCS ignore files \(default\: .gitignore\)'
+    '--global-gitignore:Use gits global gitignore file for ignore patterns'
+    '--home-ptignore:Use $Home/.ptignore file for ignore patterns'
+    {-U,--skip-vcs-ignores}':Dont use VCS ignore file for ignore patterns'
+    '-g:Print filenames matching PATTERN'
+    {-G,--file-search-regexp}':PATTERN Limit search to filenames matching PATTERN'
+    '--depth:Search up to NUM directories deep \(default\: 25\)'
+    {-f,--follow}':Follow symlinks'
+    '--hidden:Search hidden files and directories'
+    {-h,--help}':Show this help message'
+  )
+
+  _describe -t search_options "Search options" flag_search
+  _describe -t output_options "Output options" flag_output
+}
+
+_pt
+
+# vim:filetype=zsh:softtabstop=4:shiftwidth=4:tabstop=4

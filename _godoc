@@ -1,0 +1,40 @@
+#compdef godoc
+
+local -a go_packages
+
+go_packages=("builtin")
+for dir in $GOROOT $(perl -wle 'print $_ for split q{:}, $ENV{GOPATH}')
+do
+    pkgdir="$dir/pkg"
+    if [ -d $pkgdir ]; then
+      packages=$(find $pkgdir -name "*.a" \
+        | perl -wlp -e "s{$pkgdir/(?:(?:obj|tool)/)?[^/]+/}{} and s{\\.a\$}{}")
+      go_packages=($packages $go_packages)
+    fi
+done
+
+_arguments -n : \
+  '-ex[show examples in command line mode]:bool:(true false)' \
+  '-goroot[Go root directory]:rootdir:_files -/' \
+  '-html[print HTML in command-line mode]:bool:(true false)' \
+  '-index[enable search index]:bool:(true false)' \
+  '-index_files[glob pattern specifying index files]' \
+  '-index_throttle[index throttle value]' \
+  '-links[link identifiers to their declarations]:bool:(true false)' \
+  '-maxresults[maximum number of full text search results shown]' \
+  '-notes[regular expression matching note markers to show]' \
+  '-play[enable playground in web interface]:bool:(true false)' \
+  '-q[arguments are considered search queries]:boold:(true false)' \
+  '-server[webserver address for command line searches]' \
+  '-src[print (exported) source in command-line mode]:bool:(true false)' \
+  '-tabwidth[tab width]' \
+  '-templates[directory containing alternate template files]:tempdir:_files -/' \
+  '-testdir[Go root subdirectory for testing only]:testdir:_files -/' \
+  '-timestamps[show timestamps with directory listings]:bool:(true false)' \
+  '-url[print HTML for named URL]' \
+  '-v[verbose mode]:bool:(true false)' \
+  '-write_index[write index to a file]:bool:(true false)' \
+  '-zip[zip file providing the file system to serve]' \
+  '*:packages:'"($go_packages)"
+
+# vim:filetype=zsh:softtabstop=4:shiftwidth=4:tabstop=4
