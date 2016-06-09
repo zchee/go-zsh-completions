@@ -651,61 +651,104 @@ _go() {
                   ;;
 
                 pprof)
+                    local -a output_format output_file_parameter output_granularity comparison sorting
+                    local -a dynamic_profile profile_trimming sample_index sample_heap sample_contention
+                    local -a filtering miscellaneous
+
+                    output_format=(
+                    '-callgrind:Outputs a graph in callgrind format'
+                    '-disasm:Output annotated assembly for functions matching regexp or address'
+                    '-dot:Outputs a graph in DOT format'
+                    '-eog:Visualize graph through eog'
+                    '-evince:Visualize graph through evince'
+                    '-gif:Outputs a graph image in GIF format'
+                    '-gv:Visualize graph through gv'
+                    '-list:Output annotated source for functions matching regexp'
+                    '-pdf:Outputs a graph in PDF format'
+                    '-peek:Output callers/callees of functions matching regexp'
+                    '-png:Outputs a graph image in PNG format'
+                    '-proto:Outputs the profile in compressed protobuf format'
+                    '-ps:Outputs a graph in PS format'
+                    '-raw:Outputs a text representation of the raw profile'
+                    '-svg:Outputs a graph in SVG format'
+                    '-tags:Outputs all tags in the profile'
+                    '-text:Outputs top entries in text form'
+                    '-top:Outputs top entries in text form'
+                    '-tree:Outputs a text rendering of call graph'
+                    '-web:Visualize graph through web browser'
+                    '-weblist:Output annotated source in HTML for functions matching regexp or address'
+                    )
+                    output_file_parameter=(
+                    '-output:Generate output on file f (stdout by default)'
+                    )
+                    output_granularity=(
+                    '-functions:Report at function level \[default\]'
+                    '-files:Report at source file level'
+                    '-lines:Report at source line level'
+                    '-addresses:Report at address level'
+                    )
+                    comparison=(
+                    '-base:Show delta from this profile'
+                    '-drop_negative:Ignore negative differences'
+                    )
+                    sorting=(
+                    '-cum:Sort by cumulative data'
+                    )
+                    dynamic_profile=(
+                    '-seconds:Length of time for dynamic profiles'
+                    )
+                    profile_trimming=(
+                    '-nodecount:Max number of nodes to show'
+                    '-nodefraction:Hide nodes below <f>*total'
+                    '-edgefraction:Hide edges below <f>*total'
+                    )
+                    sample_index=(
+                    '-sample_index:Index of sample value to display'
+                    '-mean:Average sample value over first value'
+                    )
+                    sample_heap=(
+                    '-inuse_space:Display in-use memory size'
+                    '-inuse_objects:Display in-use object counts'
+                    '-alloc_space:Display allocated memory size'
+                    '-alloc_objects:Display allocated object counts'
+                    )
+                    sample_contention=(
+                    '-total_delay:Display total delay at each region'
+                    '-contentions:Display number of delays at each region'
+                    '-mean_delay:Display mean delay at each region'
+                    )
+                    filtering=(
+                    '-runtime:Show runtime call frames in memory profiles'
+                    '-focus:Restricts to paths going through a node matching regexp'
+                    '-ignore:Skips paths going through any nodes matching regexp'
+                    '-tagfocus:Restrict to samples tagged with key:value matching regexp'
+                    '-tagignore:Discard samples tagged with key:value matching regexp'
+                    )
+                    miscellaneous=(
+                    '-call_tree:Generate a context-sensitive call tree'
+                    '-unit:Convert all samples to unit u for display'
+                    '-divide_by:Scale all samples by dividing them by f'
+                    '-buildid:Override build id for main binary in profile'
+                    '-tools:Search path for object-level tools'
+                    '-help:This message'
+                    )
+
                   _arguments \
-                    '-callgrind[outputs a graph in callgrind format]' \
-                    '-disasm=[output annotated assembly]:p' \
-                    '-dot[outputs a graph in DOT format]' \
-                    '-eog[visualize graph through eog]' \
-                    '-evince[visualize graph through evince]' \
-                    '-gif[outputs a graph image in GIF format]' \
-                    '-gv[visualize graph through gv]' \
-                    '-list=[output annotated source for functions matching regexp]:p' \
-                    '-pdf[outputs a graph in PDF format]' \
-                    '-peek=[output callers/callees of functions matching regexp]:p' \
-                    '-png[outputs a graph image in PNG format]' \
-                    '-proto[outputs the profile in compressed protobuf format]' \
-                    '-ps[outputs a graph in PS format]' \
-                    '-raw[outputs a text representation of the raw profile]' \
-                    '-svg[outputs a graph in SVG format]' \
-                    '-tags[outputs all tags in the profile]' \
-                    '-text[outputs top entries in text form]' \
-                    '-top[outputs top entries in text form]' \
-                    '-tree[outputs a text rendering of call graph]' \
-                    '-web[visualize graph through web browser]' \
-                    '-weblist=[output annotated source in HTML]:p' \
-                    '-output=[generate output on file f (stdout by default)]:f' \
-                    '-functions[report at function level [default]]' \
-                    '-files[report at source file level]' \
-                    '-lines[report at source line level]' \
-                    '-addresses[report at address level]' \
-                    '-base[show delta from this profile]:profile' \
-                    '-drop_negative[ignore negative differences]' \
-                    '-cum[sort by cumulative data]' \
-                    '-seconds=[length of time for dynamic profiles]:n' \
-                    '-nodecount=[max number of nodes to show]:n' \
-                    '-nodefraction=[hide nodes below <f>*total]:f' \
-                    '-edgefraction=[hide edges below <f>*total]:f' \
-                    '-sample_index[index of sample value to display]' \
-                    '-mean[average sample value over first value]' \
-                    '-inuse_space[display in-use memory size]' \
-                    '-inuse_objects[display in-use object counts]' \
-                    '-alloc_space[display allocated memory size]' \
-                    '-alloc_objects[display allocated object counts]' \
-                    '-total_delay[display total delay at each region]' \
-                    '-contentions[display number of delays at each region]' \
-                    '-mean_delay[display mean delay at each region]' \
-                    '-runtime[show runtime call frames in memory profiles]' \
-                    '-focus=[restricts to paths going through a node matching regexp]:r' \
-                    '-ignore=[skips paths going through any nodes matching regexp]:r' \
-                    '-tagfocus=[restrict to samples tagged with key:value matching regexp]:r' \
-                    '-tagignore=[discard samples tagged with key:value matching regexp]' \
-                    '-call_tree[generate a context-sensitive call tree]' \
-                    '-unit=[convert all samples to unit u for display]:u' \
-                    '-divide_by=[scale all samples by dividing them by f]:f' \
-                    '-buildid=[override build id for main binary in profile]:id' \
-                    '-tools=[search path for object-level tools]:path' \
-                    '-help[help message]' \
-                    '*:files:_files'
+                      '1:target binary:_files' \
+                      '*:profile data:_files'
+
+                  _describe -t output_format "Output format (only set one):" output_format
+                  _describe -t output_file_parameter "Output file parameters (for file-based output formats):" output_file_parameter
+                  _describe -t output_granularity "Output granularity (only set one):" output_granularity
+                  _describe -t comparison "Comparison options:" comparison
+                  _describe -t sorting "Output options:" sorting
+                  _describe -t dynamic_profile "Dynamic profile options:" dynamic_profile
+                  _describe -t profile_trimming "Profile trimming options:" profile_trimming
+                  _describe -t sample_index "Sample value selection option (by index):" sample_index
+                  _describe -t sample_heap "Sample value selection option (for heap profiles):" sample_heap
+                  _describe -t sample_contention "Sample value selection option (for contention profiles):" sample_contention
+                  _describe -t filtering "Filtering options:" filtering
+                  _describe -t miscellaneous "miscellaneous:" miscellaneous
                   ;;
 
                 trace)
