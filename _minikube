@@ -1,0 +1,117 @@
+#compdef minikube
+
+typeset -A opt_args
+
+_minikube() {
+  local -a commands
+
+  commands=(
+  'dashboard:Opens/displays the kubernetes dashboard URL for your local cluster'
+  'delete:Deletes a local kubernetes cluster'
+  "docker-env:sets up docker env variables; similar to '\$(docker-machine env)'"
+  'get-k8s-versions:Gets the list of available kubernetes versions available for minikube'
+  'ip:Retrieve the IP address of the running cluster'
+  'logs:Gets the logs of the running localkube instance, used for debugging minikube, not user code'
+  'service:Gets the kubernetes URL for the specified service in your local cluster'
+  "ssh:Log into or run a command on a machine with SSH; similar to 'docker-machine ssh'"
+  'start:Starts a local kubernetes cluster'
+  'status:Gets the status of a local kubernetes cluster'
+  'stop:Stops a running local kubernetes cluster'
+  'version:Print the version of minikube'
+  'help:more information about a command'
+  )
+
+  # TODO(zchee): display global_flags
+  _arguments \
+    "1: :{_describe 'minikube command' commands}" \
+    '*:: :->args'
+
+  case $state in
+    args)
+      global_flags() {
+        _values \
+          'global flags' \
+          '--alsologtostderr[log to standard error as well as files]' \
+          '--log-flush-frequency[Maximum number of seconds between log flushes]:frequency time (default\: 5s)' \
+          '--log_backtrace_at[when logging hits line file:N, emit a stack trace]:log backtrace (default\: 0)' \
+          '--log_dir[If non-empty, write log files in this directory]:log directory:_files' \
+          '--logtostderr[log to standard error instead of files]' \
+          '--show-libmachine-logs[Whether or not to show logs from libmachine]' \
+          '--stderrthreshold[logs at or above this threshold go to stderr:stderr threshold (default\: 2)]' \
+          '--v[log level for V logs]:Log level' \
+          '--vmodule[comma-separated list of pattern=N settings for file-filtered logging]'
+      }
+
+      case $words[1] in
+        dashboard)
+          _arguments \
+            '--url[Display the kubernetes dashboard in the CLI instead of opening it in the default browser]' \
+            '*: :global_flags'
+          ;;
+        docker-env)
+          _arguments \
+            '--no-proxy[Add machine IP to NO_PROXY environment variable]' \
+            '--shell=[Force environment to be configured for a specified shell, default is auto-detect]:shell:(fish cmd powershell tcsh bash zsh)' \
+            {-u,--unset}'[Unset variables instead of setting them]' \
+            '*: :global_flags'
+          ;;
+        delete)
+          _arguments \
+            '*: :global_flags'
+          ;;
+        get-k8s-versions)
+          _arguments \
+            '*: :global_flags'
+          ;;
+        ip)
+          _arguments \
+            '*: :global_flags'
+          ;;
+        logs)
+          _arguments \
+            '*: :global_flags'
+          ;;
+        service)
+          _arguments \
+            {-n,--namespace}='[The service namespace]:service namespace' \
+            '--url=[Display the kubernetes service URL in the CLI instead of opening it in the default browser]:url' \
+            '*: :global_flags'
+          ;;
+        ssh)
+          _arguments \
+            '*: :global_flags'
+          ;;
+        start)
+          _arguments \
+            '--cpus=[Number of CPUs allocated to the minikube VM]:CPU size (default\: 1)' \
+            '--disk-size=[Disk size allocated to the minikube VM]:Disk size (default\: 20g)' \
+            '--docker-env=[Environment variables to pass to the Docker daemon]:format(key=value)' \
+            '--insecure-registry=[Insecure Docker registries to pass to the Docker daemon]' \
+            '--iso-url=[Location of the minikube iso]:ISO url' \
+            '--kubernetes-version=[The kubernetes version that the minikube VM will]:kubernetes version' \
+            '--memory=[Amount of RAM allocated to the minikube VM]:memory size (default\: 1024)' \
+            '--vm-driver=[VM driver]:vm driver (default\: virtualbox):(virtualbox xhyve vmwarefusion)' \
+            '*: :global_flags'
+          ;;
+        status)
+          _arguments \
+            '*: :global_flags'
+          ;;
+        stop)
+          _arguments \
+            '*: :global_flags'
+          ;;
+        version)
+          _arguments \
+            '*: :global_flags'
+          ;;
+        help)
+          _arguments "1: :{_describe 'command' commands -- topics}"
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_minikube
+# vim:ft=zsh:sts=2:sw=2:ts=2:expandtab
