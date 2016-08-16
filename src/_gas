@@ -1,0 +1,16 @@
+#compdef gas
+
+_gas() {
+  _arguments \
+    '-exclude[File pattern to exclude from scan (default *_test.go)]:value' \
+    '-fmt[Set output format (default "text")]:string:(json csv text)' \
+    '-nosec[Ignores #nosec comments when set]' \
+    '-out[Set output file for results]:string' \
+    '-rule[GAS rules enabled when performing a scan]:value:(tls_ok tls_old rsa exec crypto hardcoded perms tls_good templates rand sql bind tempfile unsafe errors httpoxy)' \
+    '-tool[GAS utilities to assist with rule development (default dump)]:value:(dump)' \
+    '*:file:_path_files -g "*.go"'
+}
+
+_gas
+
+# vim:ft=zsh:sts=2:sw=2:ts=2:expandtab
