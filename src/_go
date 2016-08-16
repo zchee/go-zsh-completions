@@ -232,7 +232,7 @@ _go() {
       '-pkgdir[install and load all packages from dir]:dir' \
       '-tags[list of build tags to consider satisfied]:tags' \
       '-toolexec[program to use to invoke toolchain programs]:args' \
-      "*::{ _alternative ':go files:_path_files -g \"*.go\"'}"
+      "*:args:{ _alternative ':go files:_path_files -g \"*.go\"' }"
     case $state in
       gcflags)
           _values \

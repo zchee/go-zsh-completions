@@ -1,6 +1,8 @@
 #compdef gb
 
 typeset -A opt_args
+# ?
+# zstyle ':completion:*' ambiguous false
 
 _gb() {
   local -a commands __build_flags_packags __build_flags_files test_flags
@@ -299,7 +301,6 @@ _gb() {
         local gopaths
         declare -a gopaths
         gopaths=("${(s/:/)$(go env GOPATH)}")
-        gopaths+=("$(go env GOROOT)")
         for p in $gopaths; do
           _alternative ':go packages:_path_files -W "$p/src" -/'
         done
