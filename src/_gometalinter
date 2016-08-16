@@ -1,0 +1,37 @@
+#compdef gometalinter
+
+local arguments
+arguments=(
+    '--help[Show context-sensitive help]'
+    '--help-man[Show context-sensitive help with man page syntax]'
+    '--fast[Only run fast linters]'
+    {-i,--install}'[Attempt to install all known linters]'
+    {-u,--update}'[Pass -u to go tool when installing]'
+    {-f,--force}'[Pass -f to go tool when installing]'
+    {-d,--debug}'[Display messages for failed linters, etc]'
+    {-j,--concurrency}'[Number of concurrent linters to run \(default: 16\)]'
+    {-e,--exclude}'[Exclude messages matching these regular expressions]'
+    {-I,--include}'[Include messages matching these regular expressions]'
+    {-s,--skip}'[Skip directories with this name when expandin]'
+    '--vendor[Enable vendoring support \(skips vendor directories and sets GO15VENDOREXPERIMENT=1\)]'
+    '--cyclo-over[Report functions with cyclomatic complexity over \(default: 10\)]'
+    '--line-length[Report lines longer than N using lll \(default: 80\)]'
+    '--min-confidence[Minimum confidence interval to pass to golint \(default: 80\)]'
+    '--min-occurrences[Minimum occurrences to pass to goconst \(default: 3\)]'
+    '--dupl-threshold[Minimum token sequence as a clone for dupl \(default: 50\)]'
+    '--sort[Sort output by any of none, path, line, colum]:(none path line column severity message linter)'
+    {-t,--tests}'[Include test files for linters that support this option]'
+    '--deadline[Cancel linters if they have not completed within this duration]'
+    '--errors[Only show errors]'
+    '--json[Generate structured JSON rather than standard line-based output]'
+    {-D,--disable}'[List of linters to disable \(default: testify,test,gofmt,goimports,lll\)]'
+    {-E,--enable}'[Enable previously disabled linters]:linter:(gosimple errcheck varcheck ineffassign lll unconvert goconst deadcode gocyclo dupl interfacer staticcheck golint gotype goimports structcheck aligncheck)'
+    '--linter[Specify a linter]'
+    '--message-overrides[Override message from linter]'
+    '--severity[Map of linter severities]'
+    '--disable-all[Disable all linters]'
+    '*:filename:_files'
+)
+_arguments -s $arguments
+
+# vim:ft=zsh:sts=2:sw=2:ts=2:expandtab
