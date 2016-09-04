@@ -177,73 +177,62 @@ _go() {
     done
   }
 
+  __build_flags=(
+  '-a[force rebuilding of packages that are already up-to-date]'
+  '-n[print the commands but do not run them]'
+  '-p[number of builds that can be run in parallel]:number'
+  '-race[enable data race detection]'
+  '-v[print the names of packages as they are compiled]'
+  '-work[print temporary work directory and keep it]'
+  '-x[print the commands]'
+  '-asmflags[arguments for each go tool asm invocation]:flags'
+  '-buildmode[build mode to use]:mode'
+  '-compiler[name of compiler to use]:name'
+  '-gccgoflags[arguments for gccgo]:args'
+  '-gcflags[arguments to pass on each go tool compile invocation]: :->gcflags'
+  '-installsuffix[suffix to add to package directory]:suffix'
+  '-ldflags[arguments to pass on each go tool link invocation]: :->ldflags'
+  '-linkshared[link against shared libraries]'
+  '-pkgdir[install and load all packages from dir]:dir'
+  '-tags[list of build tags to consider satisfied]:tags'
+  '-toolexec[program to use to invoke toolchain programs]:args'
+  )
+
   __build_flags_packags() {
     _arguments \
-      '-a[force rebuilding of packages that are already up-to-date]' \
-      '-n[print the commands but do not run them]' \
-      '-p[number of builds that can be run in parallel]:number' \
-      '-race[enable data race detection]' \
-      '-v[print the names of packages as they are compiled]' \
-      '-work[print temporary work directory and keep it]' \
-      '-x[print the commands]' \
-      '-asmflags[arguments for each go tool asm invocation]:flags' \
-      '-buildmode[build mode to use]:mode' \
-      '-compiler[name of compiler to use]:name' \
-      '-gccgoflags[arguments for gccgo]:args' \
-      '-gcflags[arguments to pass on each go tool compile invocation]: :->gcflags' \
-      '-installsuffix[suffix to add to package directory]:suffix' \
-      '-ldflags[arguments to pass on each go tool link invocation]: :->ldflags' \
-      '-linkshared[link against shared libraries]' \
-      '-pkgdir[install and load all packages from dir]:dir' \
-      '-tags[list of build tags to consider satisfied]:tags' \
-      '-toolexec[program to use to invoke toolchain programs]:args' \
+      ${__build_flags[@]} \
       '*:packages:__go_packages'
+
     case $state in
       gcflags)
-          _values \
-            'gcflags' \
-            ${__gcflags[@]}
-          ;;
+        _values \
+          'gcflags' \
+          ${__gcflags[@]}
+        ;;
       ldflags)
         _values \
-            'ldflags' \
-            ${__ldflags[@]}
-          ;;
+          'ldflags' \
+          ${__ldflags[@]}
+        ;;
     esac
   }
 
   __build_flags_files() {
     _arguments \
-      '-a[force rebuilding of packages that are already up-to-date]' \
-      '-n[print the commands but do not run them]' \
-      '-p[number of builds that can be run in parallel]:number' \
-      '-race[enable data race detection]' \
-      '-v[print the names of packages as they are compiled]' \
-      '-work[print temporary work directory and keep it]' \
-      '-x[print the commands]' \
-      '-asmflags[arguments for each go tool asm invocation]:flags' \
-      '-buildmode[build mode to use]:mode' \
-      '-compiler[name of compiler to use]:name' \
-      '-gccgoflags[arguments for gccgo]:args' \
-      '-gcflags[arguments to pass on each go tool compile invocation]: :->gcflags' \
-      '-installsuffix[suffix to add to package directory]:suffix' \
-      '-ldflags[arguments to pass on each go tool link invocation]: :->ldflags' \
-      '-linkshared[link against shared libraries]' \
-      '-pkgdir[install and load all packages from dir]:dir' \
-      '-tags[list of build tags to consider satisfied]:tags' \
-      '-toolexec[program to use to invoke toolchain programs]:args' \
+      ${__build_flags[@]} \
       "*:args:{ _alternative ':go files:_path_files -g \"*.go\"' }"
+
     case $state in
       gcflags)
-          _values \
-            'gcflags' \
-            ${__gcflags[@]}
-          ;;
+        _values \
+          'gcflags' \
+          ${__gcflags[@]}
+        ;;
       ldflags)
         _values \
-            'ldflags' \
-            ${__ldflags[@]}
-          ;;
+          'ldflags' \
+          ${__ldflags[@]}
+        ;;
     esac
   }
 
@@ -582,91 +571,91 @@ _go() {
                   ;;
 
                 pprof)
-                    local -a output_format output_file_parameter output_granularity comparison sorting
-                    local -a dynamic_profile profile_trimming sample_index sample_heap sample_contention
-                    local -a filtering miscellaneous
+                  local -a output_format output_file_parameter output_granularity comparison sorting
+                  local -a dynamic_profile profile_trimming sample_index sample_heap sample_contention
+                  local -a filtering miscellaneous
 
-                    output_format=(
-                    '-callgrind:Outputs a graph in callgrind format'
-                    '-disasm:Output annotated assembly for functions matching regexp or address'
-                    '-dot:Outputs a graph in DOT format'
-                    '-eog:Visualize graph through eog'
-                    '-evince:Visualize graph through evince'
-                    '-gif:Outputs a graph image in GIF format'
-                    '-gv:Visualize graph through gv'
-                    '-list:Output annotated source for functions matching regexp'
-                    '-pdf:Outputs a graph in PDF format'
-                    '-peek:Output callers/callees of functions matching regexp'
-                    '-png:Outputs a graph image in PNG format'
-                    '-proto:Outputs the profile in compressed protobuf format'
-                    '-ps:Outputs a graph in PS format'
-                    '-raw:Outputs a text representation of the raw profile'
-                    '-svg:Outputs a graph in SVG format'
-                    '-tags:Outputs all tags in the profile'
-                    '-text:Outputs top entries in text form'
-                    '-top:Outputs top entries in text form'
-                    '-tree:Outputs a text rendering of call graph'
-                    '-web:Visualize graph through web browser'
-                    '-weblist:Output annotated source in HTML for functions matching regexp or address'
-                    )
-                    output_file_parameter=(
-                    '-output:Generate output on file f (stdout by default)'
-                    )
-                    output_granularity=(
-                    '-functions:Report at function level \[default\]'
-                    '-files:Report at source file level'
-                    '-lines:Report at source line level'
-                    '-addresses:Report at address level'
-                    )
-                    comparison=(
-                    '-base:Show delta from this profile'
-                    '-drop_negative:Ignore negative differences'
-                    )
-                    sorting=(
-                    '-cum:Sort by cumulative data'
-                    )
-                    dynamic_profile=(
-                    '-seconds:Length of time for dynamic profiles'
-                    )
-                    profile_trimming=(
-                    '-nodecount:Max number of nodes to show'
-                    '-nodefraction:Hide nodes below <f>*total'
-                    '-edgefraction:Hide edges below <f>*total'
-                    )
-                    sample_index=(
-                    '-sample_index:Index of sample value to display'
-                    '-mean:Average sample value over first value'
-                    )
-                    sample_heap=(
-                    '-inuse_space:Display in-use memory size'
-                    '-inuse_objects:Display in-use object counts'
-                    '-alloc_space:Display allocated memory size'
-                    '-alloc_objects:Display allocated object counts'
-                    )
-                    sample_contention=(
-                    '-total_delay:Display total delay at each region'
-                    '-contentions:Display number of delays at each region'
-                    '-mean_delay:Display mean delay at each region'
-                    )
-                    filtering=(
-                    '-runtime:Show runtime call frames in memory profiles'
-                    '-focus:Restricts to paths going through a node matching regexp'
-                    '-ignore:Skips paths going through any nodes matching regexp'
-                    '-tagfocus:Restrict to samples tagged with key:value matching regexp'
-                    '-tagignore:Discard samples tagged with key:value matching regexp'
-                    )
-                    miscellaneous=(
-                    '-call_tree:Generate a context-sensitive call tree'
-                    '-unit:Convert all samples to unit u for display'
-                    '-divide_by:Scale all samples by dividing them by f'
-                    '-buildid:Override build id for main binary in profile'
-                    '-tools:Search path for object-level tools'
-                    '-help:This message'
-                    )
+                  output_format=(
+                  '-callgrind:Outputs a graph in callgrind format'
+                  '-disasm:Output annotated assembly for functions matching regexp or address'
+                  '-dot:Outputs a graph in DOT format'
+                  '-eog:Visualize graph through eog'
+                  '-evince:Visualize graph through evince'
+                  '-gif:Outputs a graph image in GIF format'
+                  '-gv:Visualize graph through gv'
+                  '-list:Output annotated source for functions matching regexp'
+                  '-pdf:Outputs a graph in PDF format'
+                  '-peek:Output callers/callees of functions matching regexp'
+                  '-png:Outputs a graph image in PNG format'
+                  '-proto:Outputs the profile in compressed protobuf format'
+                  '-ps:Outputs a graph in PS format'
+                  '-raw:Outputs a text representation of the raw profile'
+                  '-svg:Outputs a graph in SVG format'
+                  '-tags:Outputs all tags in the profile'
+                  '-text:Outputs top entries in text form'
+                  '-top:Outputs top entries in text form'
+                  '-tree:Outputs a text rendering of call graph'
+                  '-web:Visualize graph through web browser'
+                  '-weblist:Output annotated source in HTML for functions matching regexp or address'
+                  )
+                  output_file_parameter=(
+                  '-output:Generate output on file f (stdout by default)'
+                  )
+                  output_granularity=(
+                  '-functions:Report at function level \[default\]'
+                  '-files:Report at source file level'
+                  '-lines:Report at source line level'
+                  '-addresses:Report at address level'
+                  )
+                  comparison=(
+                  '-base:Show delta from this profile'
+                  '-drop_negative:Ignore negative differences'
+                  )
+                  sorting=(
+                  '-cum:Sort by cumulative data'
+                  )
+                  dynamic_profile=(
+                  '-seconds:Length of time for dynamic profiles'
+                  )
+                  profile_trimming=(
+                  '-nodecount:Max number of nodes to show'
+                  '-nodefraction:Hide nodes below <f>*total'
+                  '-edgefraction:Hide edges below <f>*total'
+                  )
+                  sample_index=(
+                  '-sample_index:Index of sample value to display'
+                  '-mean:Average sample value over first value'
+                  )
+                  sample_heap=(
+                  '-inuse_space:Display in-use memory size'
+                  '-inuse_objects:Display in-use object counts'
+                  '-alloc_space:Display allocated memory size'
+                  '-alloc_objects:Display allocated object counts'
+                  )
+                  sample_contention=(
+                  '-total_delay:Display total delay at each region'
+                  '-contentions:Display number of delays at each region'
+                  '-mean_delay:Display mean delay at each region'
+                  )
+                  filtering=(
+                  '-runtime:Show runtime call frames in memory profiles'
+                  '-focus:Restricts to paths going through a node matching regexp'
+                  '-ignore:Skips paths going through any nodes matching regexp'
+                  '-tagfocus:Restrict to samples tagged with key:value matching regexp'
+                  '-tagignore:Discard samples tagged with key:value matching regexp'
+                  )
+                  miscellaneous=(
+                  '-call_tree:Generate a context-sensitive call tree'
+                  '-unit:Convert all samples to unit u for display'
+                  '-divide_by:Scale all samples by dividing them by f'
+                  '-buildid:Override build id for main binary in profile'
+                  '-tools:Search path for object-level tools'
+                  '-help:This message'
+                  )
 
                   _arguments \
-                      '1:target binary:_files' \
-                      '*:profile data:_files'
+                    '1:target binary:_files' \
+                    '*:profile data:_files'
 
                   _describe -t output_format "Output format (only set one):" output_format
                   _describe -t output_file_parameter "Output file parameters (for file-based output formats):" output_file_parameter
@@ -760,4 +749,4 @@ _go() {
 
 _go
 
-# vim:filetype=zsh:softtabstop=4:shiftwidth=4:tabstop=4
+# vim:ft=zsh:sts=2:sw=2:ts=2:et
