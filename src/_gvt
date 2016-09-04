@@ -1,0 +1,79 @@
+#compdef gvt
+
+typeset -A opt_args
+
+_gvt() {
+  local -a commands __go_packages
+
+  commands=(
+  'fetch:fetch a remote dependency'
+  'restore:restore dependencies from manifest'
+  'update:update a local dependency'
+  'list:list dependencies one per line'
+  'delete:delete a local dependency'
+  'help:more information about a command'
+  )
+
+  __go_packages() {
+    local gopaths
+    declare -a gopaths
+    gopaths=("${(s/:/)$(go env GOPATH)}")
+    for p in $gopaths; do
+      _alternative ':go vendor packages:_path_files -W "$p/src" -/'
+    done
+  }
+
+  _arguments \
+    "1: :{_describe 'command' commands}" \
+    '*:: :->args'
+
+  case $state in
+    args)
+      case $words[1] in
+        fetch)
+          _arguments \
+            '-t[fetch also _test.go files and testdata]' \
+            '-a[fetch all files and subfolders, ignoring ONLY .git, .hg and .bzr]' \
+            '-branch[fetch from the named branch. Will also be used by gvt update]:branch' \
+            '-no-recurse[do not fetch recursively]' \
+            '-tag[fetch the specified tag]:tag' \
+            '-revision[fetch the specific revision from the branch or repository]:rev' \
+            '-precaire[allow the use of insecure protocols]' \
+            '*:go packages:__go_packages'
+          ;;
+
+        restore)
+          _arguments \
+            '-precaire[allow the use of insecure protocols]' \
+            '-connections[count of parallel download connections]' \
+          ;;
+
+        update)
+          _arguments \
+            '-all[update all dependencies in the manifest]' \
+            '-precaire[allow the use of insecure protocols]' \
+            "*:gvt vendor packages:($(gvt list | awk '{print $1}'))"
+          ;;
+
+        list)
+          _arguments \
+            '-f[controls the template used for printing each manifest entry]:format (default value is "{{.Importpath}}\t{{.Repository}}{{.Path}}\t{{.Branch}}\t{{.Revision}}")' \
+          ;;
+
+        delete)
+          _arguments \
+            '-all[remove all dependencies]' \
+            "*:gvt vendor packages:($(gvt list | awk '{print $1}'))"
+          ;;
+
+        help)
+          _arguments "1: :{_describe 'command' commands}"
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_gvt
+
+# vim:ft=zsh:sts=2:sw=2:ts=2:et
