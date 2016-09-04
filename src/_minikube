@@ -114,4 +114,4 @@ _minikube() {
 }
 
 _minikube
-# vim:ft=zsh:sts=2:sw=2:ts=2:expandtab
+# vim:ft=zsh:sts=2:sw=2:ts=2:et
