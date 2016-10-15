@@ -46,7 +46,10 @@
 typeset -A opt_args
 
 _go() {
-  local -a commands __build_flags_packags __build_flags_files __go_packages __gcflags __ldflags
+  local -a commands __go_packages __gcflags __ldflags
+  local -a __build_flags __build_flags_packags __build_flags_files
+  local -a __test_build_flags __test_binary_flags
+
   commands=(
   'build:compile packages and dependencies'
   'clean:remove object files'
@@ -65,6 +68,16 @@ _go() {
   'vet:run go tool vet on packages'
   'help:get more information about a command'
   )
+
+  __go_packages() {
+    local gopaths
+    declare -a gopaths
+    gopaths=("${(s/:/)$(go env GOPATH)}")
+    gopaths+=("$(go env GOROOT)")
+    for p in $gopaths; do
+      _path_files -W "$p/src" -/
+    done
+  }
 
   __gcflags=(
   '-%[debug non-static initializers]'
@@ -167,16 +180,6 @@ _go() {
   '-w[disable DWARF generation]'
   )
 
-  __go_packages() {
-    local gopaths
-    declare -a gopaths
-    gopaths=("${(s/:/)$(go env GOPATH)}")
-    gopaths+=("$(go env GOROOT)")
-    for p in $gopaths; do
-      _path_files -W "$p/src" -/
-    done
-  }
-
   __build_flags=(
   '-a[force rebuilding of packages that are already up-to-date]'
   '-n[print the commands but do not run them]'
@@ -199,7 +202,8 @@ _go() {
   )
 
   __build_flags_packags() {
-    _arguments \
+    _values \
+      'build flags' \
       ${__build_flags[@]} \
       '*:packages:__go_packages'
 
@@ -235,6 +239,39 @@ _go() {
         ;;
     esac
   }
+
+  __test_build_flags=(
+  '-args[Pass the remainder of the command line to the test binary]'
+  '-c[Compile the test binary to pkg.test but do not run it]'
+  "-exec=[Run the test binary using 'xprog']:xprog"
+  '-i[Install packages that are dependencies of the test]'
+  '-o[Compile the test binary to the named file]:binary file name:_files'
+  )
+
+  # TODO(zchee): Support for regexp keyword
+  __test_binary_flags=(
+  "-bench=[Run (sub)benchmarks matching a regular expression]:regexp of Benchmark functions:(.)"
+  '-benchtime=[Run enough iterations of each benchmark to take arg time]:time (specified as a time.Duration: e.g. 1h30s)'
+  '-count=[Run each test and benchmark n times (default: 1)]:count'
+  '-cover[Enable coverage analysis]'
+  '-covermode=[Set the mode for coverage analysis for the packages being tested (default: set)]:(set count atomic)'
+  '-coverpkg=[Apply coverage analysis in each test to the given list of packages]:packages:__go_packages'
+  '-cpu=[Specify a list of GOMAXPROCS values for which the tests or benchmarks should be executed]:(1 2 4)'
+  '-parallel=[Allow parallel execution of test functions that call t.Parallel]:number of parallel'
+  '-run=[Run only those tests and examples matching the regular expression]:regexp of Tests or Examples'
+  '-short[Tell long-running tests to shorten their run time]'
+  '-timeout=[If a test runs longer than arg time, panic (default: 10m)]:timeout (default: 10m)'
+  '-v[output log all tests as they are run and print all text from Log and Logf]'
+  '-benchmem[Print memory allocation statistics for benchmarks]'
+  '-blockprofile=[Write a goroutine blocking profile to the specified file]:profile file path:_files'
+  '-blockprofilerate=[Control the detail provided in goroutine blocking profiles by calling runtime.SetBlockProfileRate]:block profile rate'
+  '-coverprofile=[Write a coverage profile to the file after all tests have passed]:coverage profile file path:_files'
+  '-cpuprofile=[Write a CPU profile to the specified file before exiting]:CPU profile file path:_files'
+  '-memprofile=[Write a memory profile to the file after all tests have passed]:memory profile file path:_files'
+  '-memprofilerate=[Enable more precise memory profiles by setting runtime.MemProfileRate]:memory profile rate'
+  '-outputdir[Place output files from profiling in the specified directory]:output directory:_path_files -/'
+  '-trace[Write an execution trace to the specified file before exiting]:output trace file path:_files'
+  )
 
   _arguments \
     "1: :{_describe 'command' commands}" \
@@ -318,31 +355,8 @@ _go() {
 
         test)
           _arguments \
-            "-c[compile but don't run test]" \
-            '-i[install dependencies of the test]' \
-            '-bench[run benchmarks matching the regular expression]:regexp' \
-            '-benchmem[print memory allocation statistics for benchmarks]' \
-            '-benchtime[run benchmarks for t rime]:t' \
-            '-blockprofile[write a goroutine blocking profile to the specified file]:block' \
-            '-blockprofilerate[control goroutine blocking profiles]:n' \
-            '-count[run each test and benchmark n times]:n' \
-            '-cover[enable coverage analysis]' \
-            '-covermode[set the mode for coverage analysis]:mode:(set count atomic)' \
-            '-coverpkg[apply coverage analysis in each test of listed packages]:list' \
-            '-coverprofile[write a coverage profile to file]:cover' \
-            '-cpu[specify a list of GOMAXPROCS values]:cpus' \
-            '-cpuprofile[write a CPU profile to the specified file]:profile' \
-            '-memprofile[write a memory profile to file]:mem' \
-            '-memprofilerate[enable more precise memory profiles]:n' \
-            '-outputdir[place output files from profiling in output dir]:dir' \
-            '-parallel[allow parallel execution of test functions]:n' \
-            '-run[run tests and examples matching the regular expression]:regexp' \
-            '-short[tell long-running tests to shorten their run time]' \
-            '-timeout[timeout long running tests]:t' \
-            '-trace[write an execution trace to the specified file]:trace' \
-            '-v[verbose output]' \
-            '-exec[run test binary using xprog]:xprog' \
-            '-o[compile test binary to named file]:file:_files' \
+            ${__test_build_flags[@]} \
+            ${__test_binary_flags[@]} \
             '*:build flags:__build_flags_packags'
           ;;
 
