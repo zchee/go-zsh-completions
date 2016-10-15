@@ -403,19 +403,19 @@ _gb() {
                   _arguments \
                     '-all[update all dependencies in the manifest]' \
                     '-precaire[allow the use of insecure protocols.]' \
-                    '*:importpaths:__gb_vendor_packages'
+                    "*:gb vendor packages:($(gb vendor list | awk '{print $1}'))"
                   ;;
 
                 list)
                   _arguments \
                     '-f[controls the template used for printing each manifest entry]' \
-                    '*:importpaths:__gb_vendor_packages'
+                    "*:gb vendor packages:($(gb vendor list | awk '{print $1}'))"
                   ;;
 
                 delete)
                   _arguments \
                     '-all[remove all dependencies]' \
-                    '*:importpaths:__gb_vendor_packages'
+                    "*:gb vendor packages:($(gb vendor list | awk '{print $1}'))"
                   ;;
 
                 purge)
