@@ -33,20 +33,39 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 
-_gops() {
+function _gops() {
+  local context curcontext=$curcontext state line ret=1
+  declare -A opt_args
+
   local -a commands
 
   commands=(
-  'stack:Prints the stack trace'
   'gc:Runs the garbage collector and blocks until successful'
+  'stack:Prints the stack trace'
   'memstats:Prints the garbage collection stats'
   'version:Prints the Go version used to build the program'
+  'vitals:Prints the runtime stats'
+  'pprof-heap:Reads the heap profile and launches "go tool pprof"'
+  'pprof-mem:Reads the CPU profile and launches "go tool pprof"'
+  'help:Prints this help text'
   )
 
+  # TODO(zchee): display program name
+  __go_prog() {
+    : ${(A)_cache_go_prog:=${${$(gops 2>/dev/null):#[^0-9]*}%%:*}}
+    for p in $_cache_go_prog; do
+      _alternative ":prog_name:($p)"
+    done
+  }
+
   _arguments \
-    "1: :{_describe 'command' commands}" \
-    '-p=[target pid]:pid:_pids'
+    "(-)1: :{_describe 'gops command' commands}" \
+    '-p=[target pid]:go progrom pid:__go_prog' \
+    && ret=0
+
+  return ret
 }
 
-_gops
+_gops "$@"
+
 # vim:ft=zsh:et:sts=2:sw=2
