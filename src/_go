@@ -365,8 +365,7 @@ _go() {
         run)
           _arguments \
             '-exec[invoke the binary using xprog]:xporg' \
-            '1:go run file:_path_files -W "*.go"' \
-            '*:args:_files'
+            '1:go run file:_files -g "*.go"'
 
             _alternative ':build flags:__build_flags'
           ;;
