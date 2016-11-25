@@ -59,7 +59,7 @@ function _gops() {
   }
 
   _arguments \
-    "(-)1: :{_describe 'gops command' commands}" \
+    "1: :{_describe 'gops command' commands}" \
     '-p=[target pid]:go progrom pid:__go_prog' \
     && ret=0
 
