@@ -461,8 +461,7 @@ _go() {
                     _arguments \
                       '-func=[output coverage profile information for each function]:string' \
                       '-html=[generate HTML representation of coverage profile]:file:_files' \
-                      '-mode=[coverage mode]:mode:(set count atomic)' \
-                    return
+                      '-mode=[coverage mode]:mode:(set count atomic)'
                   fi
 
                   _arguments \
