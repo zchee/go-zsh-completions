@@ -1,0 +1,16 @@
+#!/bin/bash
+set -eux
+
+if [[ ! -n $1 ]];then
+  echo "Usage:\n\t$(basename $0) [GITHUB_USER/REPOSITORY]"
+  exit 1
+fi
+
+REPOSITORY=$1
+CMD_DIR=$2
+if [[ -n $CMD_DIR ]]; then
+  CMD_DIR="/$CMD_DIR"
+fi
+
+echo "- [github.com/$REPOSITORY](https://github.com/$REPOSITORY)" >> "$HOME/.zsh/completions/go/TODO.md"
+echo "  - \`go get -u -v github.com/$REPOSITORY$CMD_DIR\`" >> "$HOME/.zsh/completions/go/TODO.md"
