@@ -58,7 +58,7 @@ function _glide() {
   {update,up}:"Update a project's dependencies"
   )
 
-  __go_packages() {
+  _go_packages() {
     local -a gopath
     gopath=("${(s/:/)$(go env GOPATH)}")
     for p in $gopath; do
@@ -66,7 +66,7 @@ function _glide() {
     done
   }
 
-  __glide_vendor_packages() {
+  _glide_vendor_packages() {
     local vcs_root
     vcs_root=$(git rev-parse --show-toplevel --quiet)
     _alternative ':glide vendor packages:_path_files -W "$vcs_root/vendor" -/'
@@ -106,7 +106,7 @@ function _glide() {
             {--strip-vendor,-v}'[Removes nested vendor and Godeps/_workspace directories]' \
             '--non-interactive[Disable interactive prompts]' \
             '--skip-test[Resolve dependencies in test files]' \
-            '*: :__go_packages' \
+            '*: :_go_packages' \
             && ret=0
           ;;
 
@@ -178,7 +178,7 @@ function _glide() {
         (remove|rm)
           _arguments \
             {--delete,-d}'[Also delete from vendor/ any packages that are no longer used]' \
-            '*: :__glide_vendor_packages' \
+            '*: :_glide_vendor_packages' \
             && ret=0
           ;;
 
