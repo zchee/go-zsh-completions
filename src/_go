@@ -552,37 +552,39 @@ _go() {
                   local -a dynamic_profile profile_trimming sample_index sample_heap sample_contention
                   local -a filtering miscellaneous
 
+                  # Output format (only set one)
                   output_format=(
-                  '-callgrind:Outputs a graph in callgrind format'
-                  '-disasm:Output annotated assembly for functions matching regexp or address'
-                  '-dot:Outputs a graph in DOT format'
-                  '-eog:Visualize graph through eog'
-                  '-evince:Visualize graph through evince'
-                  '-gif:Outputs a graph image in GIF format'
-                  '-gv:Visualize graph through gv'
-                  '-list:Output annotated source for functions matching regexp'
-                  '-pdf:Outputs a graph in PDF format'
-                  '-peek:Output callers/callees of functions matching regexp'
-                  '-png:Outputs a graph image in PNG format'
-                  '-proto:Outputs the profile in compressed protobuf format'
-                  '-ps:Outputs a graph in PS format'
-                  '-raw:Outputs a text representation of the raw profile'
-                  '-svg:Outputs a graph in SVG format'
-                  '-tags:Outputs all tags in the profile'
-                  '-text:Outputs top entries in text form'
-                  '-top:Outputs top entries in text form'
-                  '-tree:Outputs a text rendering of call graph'
-                  '-web:Visualize graph through web browser'
-                  '-weblist:Output annotated source in HTML for functions matching regexp or address'
+                  '(-disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-callgrind[Outputs a graph in callgrind format]'
+                  '(-callgrind -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-disasm=[Output annotated assembly for functions matching regexp or address]:functions regexp pattern'
+                  '(-callgrind -disasm -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-dot[Outputs a graph in DOT format]'
+                  '(-callgrind -disasm -dot -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-eog[Visualize graph through eog]'
+                  '(-callgrind -disasm -dot -eog -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-evince[Visualize graph through evince]'
+                  '(-callgrind -disasm -dot -eog -evince -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-gif[Outputs a graph image in GIF format]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-gv[Visualize graph through gv]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-list=[Output annotated source for functions matching regexp]:functions regexp pattern'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -peak -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-pdf[Outputs a graph in PDF format]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -png -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-peek=[Output callers/callees of functions matching regexp]:functions regexp pattern'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -proto -ps -raw -svg -tags -text -top -tree -web -weblist)-png[Outputs a graph image in PNG format]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -ps -raw -svg -tags -text -top -tree -web -weblist)-proto[Outputs the profile in compressed protobuf format]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -raw -svg -tags -text -top -tree -web -weblist)-ps[Outputs a graph in PS format]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -svg -tags -text -top -tree -web -weblist)-raw[Outputs a text representation of the raw profile]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -tags -text -top -tree -web -weblist)-svg[Outputs a graph in SVG format]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -text -top -tree -web -weblist)-tags[Outputs all tags in the profile]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -top -tree -web -weblist)-text[Outputs top entries in text form]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -tree -web -weblist)-top[Outputs top entries in text form]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -web -weblist)-tree[Outputs a text rendering of call graph]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -weblist)-web[Visualize graph through web browser]'
+                  '(-callgrind -disasm -dot -eog -evince -gif -gv -list -pdf -peak -png -proto -ps -raw -svg -tags -text -top -tree -web)-weblist=[Output annotated source in HTML for functions matching regexp or address]:functions regexp pattern'
                   )
                   output_file_parameter=(
                   '-output:Generate output on file f (stdout by default)'
                   )
+                  # Output granularity (only set one)
                   output_granularity=(
-                  '-functions:Report at function level \[default\]'
-                  '-files:Report at source file level'
-                  '-lines:Report at source line level'
-                  '-addresses:Report at address level'
+                  '(-files -lines -addresses)-functions[Report at function level \[default\]]'
+                  '(-functions -lines -addresses)-files[Report at source file level]'
+                  '(-functions -files -addresses)-lines[Report at source line level]'
+                  '(-functions -files -lines)-addresses[Report at address level]'
                   )
                   comparison=(
                   '-base:Show delta from this profile'
@@ -632,11 +634,12 @@ _go() {
 
                   _arguments \
                     '1:target binary:_files' \
-                    '*:profile data:_files'
+                    '*:profile data:_files' \
+                    $output_format \
+                    $output_granularity
 
-                  _describe -t output_format "Output format (only set one):" output_format
                   _describe -t output_file_parameter "Output file parameters (for file-based output formats):" output_file_parameter
-                  _describe -t output_granularity "Output granularity (only set one):" output_granularity
+                  # _describe -t output_granularity "Output granularity (only set one):" output_granularity
                   _describe -t comparison "Comparison options:" comparison
                   _describe -t sorting "Output options:" sorting
                   _describe -t dynamic_profile "Dynamic profile options:" dynamic_profile
