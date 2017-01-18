@@ -8,6 +8,7 @@ _gb() {
   local -a commands __build_flags_packags __build_flags_files test_flags
   commands=(
   'build:build a package'
+  'depset'
   'doc:show documentation for a package or symbol'
   'env:print project environment variables'
   'generate:generate Go files by processing source'
