@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 set -e
 
 PROG_NAME=$1
@@ -19,3 +19,5 @@ cp "$CURRENT/src/__template" "$CURRENT/src/_$PROG_NAME"
 sed -i "s/\$BIN/$PROG_NAME/g" "$CURRENT/src/_$PROG_NAME"
 
 $EDITOR "$CURRENT/src/_$PROG_NAME"
+
+autoload -Uz _$PROG_NAME
