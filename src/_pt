@@ -72,7 +72,7 @@ function _pt() {
     '--version[Show version]' \
     '--vcs-ignore=[VCS ignore files]:vsc ignore file (default: .gitignore)' \
     {-w,--word-regexp}'[Only match whole words]' \
-    '(-)*: :->args' \
+    '*: :->args' \
     && ret=0
 
   case $state in
