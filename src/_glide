@@ -190,6 +190,7 @@ function _glide() {
             '--resolve-current[Resolve dependencies for only the current system rather than all build modes]' \
             {--strip-vendor,-v}'[Removes nested vendor and Godeps/_workspace directories]' \
             '--skip-test[Resolve dependencies in test files]' \
+            '*: :_glide_vendor_packages' \
             && ret=0
           ;;
 
