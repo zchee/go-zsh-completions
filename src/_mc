@@ -85,6 +85,22 @@ function _mc() {
         cp)
           _files
           ;;
+        rm)
+          _arguments -C \
+            (--recursive -r){--recursive,-r}'[Remove recursively]' \
+            '--force[Force a dangerous remove operation]' \
+            (--incomplete -I){--incomplete,-I}'[Remove incomplete uploads]' \
+            '--fake[Perform a fake remove operation]' \
+            '--stdin[Read object names from STDIN]' \
+            '--older-than[Remove objects older than N days. (default: 0)]:value' \
+            (--config-folder -C){--config-folder,-C}'[Path to configuration folder. (default: "/Users/zchee/.mc")]:value' \
+            (--quiet -q){--quiet,-q}'[Suppress chatty console output]' \
+            '--no-color[Disable color theme]' \
+            '--json[Enable JSON formatted output]' \
+            '--debug[Enable debug output]' \
+            '--insecure[Disable SSL certificate verification]'\
+            && ret=0
+          ;;
         help)
           _arguments "1: :{_describe 'command' commands}"
           ;;
