@@ -46,7 +46,7 @@
 typeset -A opt_args
 
 _go() {
-  local -a commands __go_packages 
+  local -a commands
   local -a __build_flags
   local -a __test_build_flags __test_binary_flags __test_profile_flags
 
@@ -77,6 +77,7 @@ _go() {
     for p in $gopaths; do
       _alternative ':go packages:_path_files -W "$p/src" -/'
     done
+    _alternative '*:go file:_files -g "*.go(-.)"'
   }
 
   __build_flags() {
