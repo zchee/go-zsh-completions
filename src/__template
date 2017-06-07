@@ -45,19 +45,6 @@ function _$BIN() {
   'subcommand3:description3'
   )
 
-  # -C: Modify the curcontext parameter for an action of the form `->state`.
-  #     The option -C tells _arguments to modify the curcontext parameter for an action of the form `->state`.
-  #     This is the standard parameter used to keep track of the current context.
-  #     Here it (and not the context array) should be made local to the calling function to avoid
-  #     passing back the modified value and should be initialised to the current value at the
-  #     start of the function:
-  #       local curcontext="$curcontext"
-  #     This is useful where it is not possible for multiple states to be valid together.
-  # -s: Enable option stacking for single-letter options, whereby multiple single-letter options may be combined into a single word.
-  #     For example, the two options `-x` and `-y` may be combined into a single word `-xy`.
-  # -S: Do not complete options after a `--` appearing on the line, and ignore the `--`. For example, with -S, in the line
-  #       foobar -x -- -y
-  #     the `-x` is considered an option, the `-y` is considered an argument, and the `--` is considered to be neither.
   _arguments -C \
     "1: :{_describe '$BIN command' commands}" \
     '*:: :->args' \
