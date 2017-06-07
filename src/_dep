@@ -40,7 +40,7 @@ function _dep() {
   'init:Initialize a new project with manifest and lock files'
   "status:Report the status of the project's dependencies"
   'ensure:Ensure a dependency is safely vendored in the project'
-  'remove:Remove a dependency from the project'
+  'prune:Prune the vendor tree of unused packages'
   )
 
   __go_packages() {
@@ -80,7 +80,7 @@ function _dep() {
 
   _arguments -C \
     '-help[show help]' \
-    "1: :{_describe 'dep command' commands}" \
+    "1: :{_describe 'dep subcommand' commands}" \
     '*:: :->args' \
     && ret=0
 
@@ -89,6 +89,8 @@ function _dep() {
       case $words[1] in
         init)
           _arguments \
+            "-no-examples:don't include example in Gopkg.toml (default: false)"
+            '-skip-tools:skip importing configuration from other dependency managers (default: false)'
             '-v[enable verbose logging (default: false)]' \
             '-help[show help]' \
             '*:root:_directories' \
@@ -120,15 +122,9 @@ function _dep() {
             '*: :__go_packages' \
             && ret=1
           ;;
-        remove)
+        prune)
           _arguments \
-            '-force[remove the given dependencies even if they are imported by the project (default: false)]' \
-            "-keep-source[don't remove source code (default: false)]" \
-            "-n[dry run, don't actually remove anything (default: false)]" \
-            "-unused[remove all dependencies that aren't imported by the project (default: false)]" \
             '-v[enable verbose logging (default: false)]' \
-            '-help[show help]' \
-            '*: :__go_packages' \
             && ret=1
           ;;
       esac
