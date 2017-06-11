@@ -89,8 +89,8 @@ function _dep() {
       case $words[1] in
         init)
           _arguments \
-            "-no-examples:don't include example in Gopkg.toml (default: false)"
-            '-skip-tools:skip importing configuration from other dependency managers (default: false)'
+            "-no-examples[don't include example in Gopkg.toml (default: false)]" \
+            '-skip-tools[skip importing configuration from other dependency managers (default: false)]' \
             '-v[enable verbose logging (default: false)]' \
             '-help[show help]' \
             '*:root:_directories' \
