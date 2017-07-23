@@ -16,8 +16,15 @@ _gb() {
   'info:info returns information about this project'
   'list:list the packages named by the importpaths'
   'test:test packages'
-  'vendor:manage your vendored dependencies'
   )
+
+  if hash gb-vendor; then
+    commands+='vendor:manage your vendored dependencies'
+  fi
+
+  if hash gb-gae; then
+    commands+='gae:tool for managing Google Appengine applications with gb.'
+  fi
 
   _arguments \
     "1: :{_describe 'gb command' commands}" \
@@ -339,6 +346,22 @@ _gb() {
           _arguments \
             '*:gb project environment:(GB_PROJECT_DIR GB_SRC_PATH GB_PKG_DIR GB_BIN_SUFFIX GB_GOROOT)'
             ;;
+
+        gae)
+          local -a gae_command
+          gae_command=(
+          'serve:starts a local development App Engine server'
+          'deploy:deploys your application to App Engine'
+          'build:compile packages and dependencies'
+          'test:test packages'
+          'raw:Directly call the dev_appserver.py'
+          'appcfg:Directly call the appcfg.py'
+          'gcloud:Directly call the gcloud command.'
+          )
+          _arguments \
+            "1: :{_describe 'gb gae command' gae_command}"
+            ;;
+
 
         generate)
           _arguments \
