@@ -143,9 +143,10 @@ _go() {
         '-%[debug non-static initializers]'
         '-+[compiling runtime]'
         '-B[disable bounds checking]'
-        '-D[\[path\]: set relative path for local imports]:path:_files'
+        '-C[disable printing of columns in error messages]'
+        '-D[set relative path for local imports]:path:_files'
         '-E[debug symbol export]'
-        '-I[\[directory\]: add directory to import search path]:directory:_path_files -/'
+        '-I[add directory to import search path]:directory:_directories'
         '-K[debug missing line numbers]'
         '-N[disable optimizations]'
         '-S[print assembly listing]'
@@ -153,40 +154,47 @@ _go() {
         '-W[debug parse tree after type checking]'
         '-asmhdr[write assembly header to file]:file:_files'
         '-bench[append benchmark times to file]:file:_files'
+        '-blockprofile[write block profile to file]:file:_files'
         '-buildid[record id as the build id in the export metadata]:id'
+        '-c[concurrency during compilation, 1 means no concurrency (default 1)]:num concurrency'
         '-complete[compiling complete package (no C or assembly)]'
         '-cpuprofile[write cpu profile to file]:file:_files'
-        '-d[print debug information about items in list]:list'
+        '-d[print debug information about items in list; try -d help]:list'
+        '-dolinkobj[generate linker-specific objects; if false, some invalid code may compile (default true)]'
+        '-dwarf[generate DWARF symbols (default true)]'
         '-dynlink[support references to Go symbols defined in other shared libraries]'
         '-e[no limit on number of errors reported]'
         '-f[debug stack frames]'
+        '-goversion[required version of the runtime]:go version'
         '-h[halt on error]'
         '-i[debug line number stack]'
+        '-importcfg[read import configuration from file]:file:_files'
         '-importmap[add definition of the form source=actual to import map]:definition'
         '-installsuffix[set pkg directory suffix]:suffix'
         '-j[debug runtime-initialized variables]'
         '-l[disable inlining]'
-        '-largemodel[generate code that assumes a large memory model]'
         '-linkobj[write linker-specific object to file]:file:_files'
         '-live[debug liveness analysis]'
         '-m[print optimization decisions]'
         '-memprofile[write memory profile to file]:file:_files'
         '-memprofilerate[set runtime.MemProfileRate to rate]:rate'
         '-msan[build code compatible with C/C++ memory sanitizer]'
+        '-mutexprofile[write mutex profile to file]:file:_files'
         '-nolocalimports[reject local (relative) imports]'
         '-o[write output to file]:file:_files'
-        '-p[set expected package import path]:path:_path_files'
+        '-p[set expected package import path]:path:_files'
         '-pack[write package file instead of object file]'
         '-r[debug generated wrappers]'
         '-race[enable race detector]'
         '-s[warn about composite literals that can be simplified]'
         '-shared[generate code that can be linked into a shared library]'
+        '-std[compiling standard library]'
         '-traceprofile[write an execution trace to file]:file:_files'
         '-trimpath[remove prefix from recorded source file paths]:prefix'
         '-u[reject unsafe code]'
         '-v[increase debug verbosity]'
         '-w[debug type checking]'
-        '-wb[enable write barrier]'
+        '-wb[enable write barrier (default true)]'
         )
         _values \
           'gcflags' \
@@ -454,12 +462,12 @@ _go() {
                     '-importpath[import path of package being built]:import path (string)' \
                     '-objdir[object directory]:directory path (string)' \
                     '-srcdir[source directory]:directory path (string)' \
-                    '*:file:_path_files -g "*.go"'
+                    '*:go file:_files -g "*.go(-.)"'
                   ;;
 
                 compile)
                   _arguments \
-                    ${__gcflags[@]}
+                    ${__gcflags[@]} \
                     '*:file:_path_files -g "*.go"'
                   ;;
 
