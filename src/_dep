@@ -41,6 +41,7 @@ function _dep() {
   "status:Report the status of the project's dependencies"
   'ensure:Ensure a dependency is safely vendored in the project'
   'prune:Prune the vendor tree of unused packages'
+  'version:Show the dep version information'
   )
 
   __go_packages() {
@@ -89,42 +90,55 @@ function _dep() {
       case $words[1] in
         init)
           _arguments \
-            "-no-examples[don't include example in Gopkg.toml (default: false)]" \
-            '-skip-tools[skip importing configuration from other dependency managers (default: false)]' \
-            '-v[enable verbose logging (default: false)]' \
+            '-gopath[search in GOPATH for dependencies]' \
+            "-no-examples[don't include example in Gopkg.toml]" \
+            '-skip-tools[skip importing configuration from other dependency managers]' \
+            '-v[enable verbose logging]' \
             '-help[show help]' \
             '*:root:_directories' \
             && ret=1
           ;;
         status)
           _arguments \
-            '-detailed[report more detailed status (default: false)]' \
-            '-dot[output the dependency graph in GraphViz format (default: false)]' \
-            '-f[output in text/template format (default: <none>)]:text/template format' \
-            '-json[output in JSON format (default: false)]' \
-            '-missing[only show missing dependencies (default: false)]' \
-            '-modified[only show modified dependencies (default: false)]' \
-            '-old[only show out-of-date dependencies (default: false)]' \
-            '-unused[only show unused dependencies (default: false)]' \
-            '-v[enable verbose logging (default: false)]' \
+            '-detailed[report more detailed status]' \
+            '-dot[output the dependency graph in GraphViz format]' \
+            '-f[output in text/template format (default: <none>)]' \
+            '-json[output in JSON format]' \
+            '-missing[only show missing dependencies]' \
+            '-modified[only show modified dependencies]' \
+            '-old[only show out-of-date dependencies]' \
+            '-unused[only show unused dependencies]' \
+            '-v[enable verbose logging]' \
             '-help[show help]' \
             '*: :__go_packages' \
             && ret=1
+
+            '-detailed[report more detailed status]' \
+            '-dot[output the dependency graph in GraphViz format]' \
+            '-f[output in text/template format (default: <none>)]:text/template format' \
+            '-json[output in JSON format]' \
+            '-missing[only show missing dependencies]' \
+            '-modified[only show modified dependencies]' \
+            '-old[only show out-of-date dependencies]' \
+            '-unused[only show unused dependencies]' \
+            '-v[enable verbose logging]' \
           ;;
         ensure)
           _arguments \
-            '-examples[print detailed usage examples (default: false)]' \
-            "-n[dry run, don't actually ensure anything (default: false)]" \
-            '-override[specify an override constraint spec (repeatable) (default: <none>)]' \
-            '-update[ensure all dependencies are at the latest version allowed by the manifest (default: false)]' \
-            '-v[enable verbose logging (default: false)]' \
+            '-add[add new dependencies, or populate Gopkg.toml with constraints for existing dependencies]' \
+            '-dry-run[only report the changes that would be made]' \
+            '-examples[print detailed usage examples]' \
+            '-no-vendor[update Gopkg.lock (if needed), but do not update vendor/]' \
+            '-update[update the named dependencies (or all, if none are named) in Gopkg.lock to the latest allowed by Gopkg.toml]' \
+            '-v[enable verbose logging]' \
+            '-vendor-only[populate vendor/ from Gopkg.lock without updating it first]' \
             '-help[show help]' \
             '*: :__go_packages' \
             && ret=1
           ;;
-        prune)
+        (prune|version)
           _arguments \
-            '-v[enable verbose logging (default: false)]' \
+            '-v[enable verbose logging]' \
             && ret=1
           ;;
       esac
