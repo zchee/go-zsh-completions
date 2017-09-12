@@ -326,6 +326,7 @@ _gb() {
       case $words[1] in
         build)
           _arguments \
+            '-d[enable debug output]' \
             '-dotfile[if provided, gb will output a dot formatted file of the build steps to be performed]' \
             '-F[do not cache packages, cached packages will still be used for incremental compilation]' \
             '-f[ignore cached packages if present, new packages built will overwrite any cached packages]' \
@@ -339,11 +340,13 @@ _gb() {
 
         doc)
           _arguments \
+            '-d[enable debug output]' \
             '*:importpaths:__go_packages'
             ;;
 
         env)
           _arguments \
+            '-d[enable debug output]' \
             '*:gb project environment:(GB_PROJECT_DIR GB_SRC_PATH GB_PKG_DIR GB_BIN_SUFFIX GB_GOROOT)'
             ;;
 
@@ -359,23 +362,27 @@ _gb() {
           'gcloud:Directly call the gcloud command.'
           )
           _arguments \
+            '-d[enable debug output]' \
             "1: :{_describe 'gb gae command' gae_command}"
             ;;
 
 
         generate)
           _arguments \
+            '-d[enable debug output]' \
             '-run=[specifies a regular expression to select directives]:regex' \
             "*:args:{ _alternative ':importpaths:__go_packages' _files }"
             ;;
 
         info)
           _arguments \
+            '-d[enable debug output]' \
             '*:gb environment:(GB_PROJECT_DIR GB_SRC_PATH GB_PKG_DIR GB_BIN_SUFFIX GB_GOROOT)'
             ;;
 
         list)
           _arguments \
+            '-d[enable debug output]' \
             '-f[alternate format for the list]:format' \
             '-json[prints output in structured JSON format]' \
             '-s[read format template from STDIN]' \
@@ -384,6 +391,7 @@ _gb() {
 
         test)
           _arguments \
+            '-d[enable debug output]' \
             '-v[print output from test subprocess]' \
             ${test_flags[@]} \
             ;;
@@ -401,6 +409,7 @@ _gb() {
           )
 
           _arguments \
+            '-d[enable debug output]' \
             '-n[print command that would be executed]' \
             "1: :{_describe 'vendor command' vendor_cmds}" \
             '*:: :->args'
