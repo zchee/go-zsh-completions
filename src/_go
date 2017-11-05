@@ -308,7 +308,6 @@ _go() {
             '-o[force build to write to named output file]:file:_files' \
             '-i[installs the packages that are dependencies of the target]' \
             '*: :__go_packages'
-
           _alternative ':build flags:__build_flags'
           ;;
 
@@ -318,7 +317,6 @@ _go() {
             '-i[remove corresponding installed archive or binary]' \
             '-r[apply clean recursively on all dependencies]' \
             '*:go packages:__go_packages'
-
           _alternative ':build flags:__build_flags'
           ;;
 
@@ -360,7 +358,6 @@ _go() {
             '-t[also download the packages required to build tests]' \
             '-u[use the network to update the named packages]' \
             '*: :__go_packages'
-
           _alternative ':build flags:__build_flags'
           ;;
 
@@ -368,7 +365,6 @@ _go() {
           _arguments \
             '-i[installs the dependencies of the named packages as well]' \
             '*: :__go_packages'
-
           _alternative ':build flags:__build_flags'
           ;;
 
@@ -394,7 +390,6 @@ _go() {
             ${__test_binary_flags[@]} \
             ${__test_profile_flags[@]} \
             '*: :__go_packages'
-
           _alternative ':build flags:__build_flags'
           ;;
 
@@ -723,7 +718,6 @@ _go() {
             '-n[print commands that would be executed]' \
             '-x[prints commands as they are executed]' \
             '*:build flags:__go_packages'
-
           _alternative ':build flags:__build_flags'
           ;;
 
@@ -740,7 +734,6 @@ _go() {
           'testflag:description of testing flags'
           'testfunc:description of testing functions'
           )
-
           _arguments "1: :{_describe 'command' commands -- topics}"
           ;;
       esac
