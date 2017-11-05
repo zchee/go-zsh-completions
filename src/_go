@@ -310,6 +310,7 @@ _go() {
 
         clean)
           _arguments \
+            '-cache[clean to remove the entire go build cache, in addition to cleaning specified packages (if any)]' \
             '-i[remove corresponding installed archive or binary]' \
             '-r[apply clean recursively on all dependencies]' \
             '*:go packages:__go_packages'
