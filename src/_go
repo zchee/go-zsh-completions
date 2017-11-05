@@ -362,6 +362,7 @@ _go() {
 
         install)
           _arguments \
+            '-i[installs the dependencies of the named packages as well]' \
             '*: :__go_packages'
 
           _alternative ':build flags:__build_flags'
