@@ -416,7 +416,6 @@ _go() {
           'pprof:interprets and displays profiles of Go programs'
           'trace:viewing trace files'
           'vet:examines Go source code and reports suspicious constructs'
-          'yacc:yacc for Go'
           )
 
           _arguments \
