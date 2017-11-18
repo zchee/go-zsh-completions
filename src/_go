@@ -103,7 +103,9 @@ _go() {
       '-linkshared[link against shared libraries]' \
       '-pkgdir[install and load all packages from dir]:dir' \
       '-tags=[list of build tags to consider satisfied]:tags' \
-      '-toolexec[program to use to invoke toolchain programs]:args'
+      '-toolexec[program to use to invoke toolchain programs]:args' \
+      '-debug-actiongraph[Undocumented, unstable debugging flags. action graph]' \
+      '-debug-deprecated-importcfg[Undocumented, unstable debugging flags. deprecated import config]'
 
     case $state in
       asmflags)
@@ -314,6 +316,7 @@ _go() {
         clean)
           _arguments \
             '-cache[clean to remove the entire go build cache, in addition to cleaning specified packages (if any)]' \
+            '-testcache[clean to expire all test results in the go build cache]' \
             '-i[remove corresponding installed archive or binary]' \
             '-r[apply clean recursively on all dependencies]' \
             '*:go packages:__go_packages'
