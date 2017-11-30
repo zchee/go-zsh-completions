@@ -267,6 +267,7 @@ _go() {
   "-json[Convert test output to JSON suitable for automated processing. See 'go doc test2json' for the encoding details]"
   '-i[Install packages that are dependencies of the test]'
   '-o[Compile the test binary to the named file]:binary file name:_files'
+  '-vet[Configure the invocation of "go vet" during "go test" to use the comma-separated list of vet checks]:list'
   )
 
   # TODO(zchee): Support for regexp keyword
