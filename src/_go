@@ -264,6 +264,7 @@ _go() {
   '-args[Pass the remainder of the command line to the test binary]'
   '-c[Compile the test binary to pkg.test but do not run it]'
   "-exec=[Run the test binary using 'xprog']:xprog"
+  "-json[Convert test output to JSON suitable for automated processing. See 'go doc test2json' for the encoding details]"
   '-i[Install packages that are dependencies of the test]'
   '-o[Compile the test binary to the named file]:binary file name:_files'
   )
