@@ -81,6 +81,6 @@ function _$BIN() {
   return ret
 }
 
-_$BIN "$@"
+_$BIN "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2
