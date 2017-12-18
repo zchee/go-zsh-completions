@@ -62,6 +62,6 @@ function _go-torch() {
   return ret
 }
 
-_go-torch "$@"
+_go-torch "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

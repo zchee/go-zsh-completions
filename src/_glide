@@ -205,6 +205,6 @@ function _glide() {
   return ret
 }
 
-_glide "$@"
+_glide "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

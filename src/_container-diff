@@ -163,6 +163,6 @@ function _container-diff() {
   return ret
 }
 
-_container-diff "$@"
+_container-diff "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

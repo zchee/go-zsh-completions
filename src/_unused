@@ -57,6 +57,6 @@ function _unused() {
   return ret
 }
 
-_unused "$@"
+_unused "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

@@ -132,6 +132,6 @@ function _gocode() {
   return ret
 }
 
-_gocode "$@"
+_gocode "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

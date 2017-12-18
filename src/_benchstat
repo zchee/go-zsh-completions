@@ -66,6 +66,6 @@ function _benchstat() {
   return ret
 }
 
-_benchstat "$@"
+_benchstat "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

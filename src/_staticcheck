@@ -83,6 +83,6 @@ function _staticcheck() {
   return ret
 }
 
-_staticcheck "$@"
+_staticcheck "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

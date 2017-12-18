@@ -48,6 +48,6 @@ function _goyacc() {
   return ret
 }
 
-_goyacc "$@"
+_goyacc "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

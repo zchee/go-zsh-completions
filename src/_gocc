@@ -76,6 +76,6 @@ function _gocc() {
   return ret
 }
 
-_gocc "$@"
+_gocc "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

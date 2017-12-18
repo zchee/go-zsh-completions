@@ -77,6 +77,6 @@ function _poule() {
   return ret
 }
 
-_poule "$@"
+_poule "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

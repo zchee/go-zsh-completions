@@ -148,6 +148,6 @@ function _dep() {
   return ret
 }
 
-_dep "$@"
+_dep "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

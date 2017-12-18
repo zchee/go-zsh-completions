@@ -588,6 +588,6 @@ function _goapp() {
   esac
 }
 
-_goapp "$@"
+_goapp "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

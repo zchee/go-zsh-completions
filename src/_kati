@@ -79,6 +79,6 @@ function _kati() {
   return ret
 }
 
-_kati "$@"
+_kati "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

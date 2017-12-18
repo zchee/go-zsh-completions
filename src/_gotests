@@ -62,6 +62,6 @@ function _gotests() {
   return ret
 }
 
-_gotests "$@"
+_gotests "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2

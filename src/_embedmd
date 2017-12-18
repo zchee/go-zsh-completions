@@ -47,6 +47,6 @@ function _embedmd() {
   return ret
 }
 
-_embedmd "$@"
+_embedmd "$*"
 
 # vim:ft=zsh:et:sts=2:sw=2
