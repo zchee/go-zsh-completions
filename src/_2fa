@@ -54,15 +54,12 @@ function _2fa() {
   _arguments -C \
     '-add[adds a new key to the 2fa keychain with the given name.]: :->addflags' \
     '-list[lists the names of all the keys in the keychain.]' \
+    '1:keynames:_keynames' \
     '*:: :->args' \
     && ret=0
 
   case $state in
-    (args)
-      _arguments -C \
-        '*:keynames:_keynames' \
-      ;;
-    (addflags)
+    addflags)
       local -a _add_flags
       _add_flags=(
       '-7[7-digit codes instead.]'
