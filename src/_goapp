@@ -134,7 +134,8 @@ function _goapp() {
       '-linkshared[link against shared libraries]' \
       '-pkgdir[install and load all packages from dir]:dir' \
       '-tags=[list of build tags to consider satisfied]:tags' \
-      '-toolexec[program to use to invoke toolchain programs]:args'
+      '-toolexec[program to use to invoke toolchain programs]:args' \
+      '--debug[debug]'
 
     case $state in
       asmflags)
