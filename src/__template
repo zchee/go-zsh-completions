@@ -38,7 +38,6 @@ function _$BIN() {
   declare -A opt_args
 
   local -a commands
-
   commands=(
   'subcommand1:description1'
   'subcommand2:description2'
