@@ -333,6 +333,37 @@ _go() {
             '*: :__go_packages'
           ;;
 
+        env)
+          local -a _envs
+          _envs=(
+          'GOARCH:The architecture, or processor, for which to compile code.'
+          "GOBIN:The directory where 'go install' will install a command."
+          'GOCACHE:The directory where the go command will store cached information for reuse in future builds.'
+          'GOEXE:It’s the value of the executable suffix. It’s set automatically in build.go.'
+          'GOHOSTARCH:The name of the host operating system.'
+          'GOHOSTOS:The name of the compilation architecture.'
+          'GOOS:The operating system for which to compile code.'
+          'GOPATH:Specifies the location of your workspace.'
+          'GORACE:Options for the race detector.'
+          'GOROOT:The root of the go tree.'
+          'GOTMPDIR:The directory where the go command will write temporary source files, packages, and binaries.'
+          'GOTOOLDIR:Use by things that want to get to the tool dir. It is explicitly NOT something that is pulled from the environment.'
+          "GCCGO:The gccgo command to run for 'go build -compiler=gccgo'."
+          'CC:The command to use to compile C code.'
+          'CXX:The command to use to compile C++ code.'
+          'CGO_ENABLED:Whether the cgo command is supported. Either 0 or 1.'
+          'CGO_CFLAGS:Flags that cgo will pass to the compiler when compiling C code.'
+          'CGO_CPPFLAGS:Flags that cgo will pass to the compiler when compiling C or C++ code.'
+          'CGO_CXXFLAGS:Flags that cgo will pass to the compiler when compiling C++ code.'
+          'CGO_FFLAGS:Flags that cgo will pass to the compiler when compiling Fortran code.'
+          'CGO_LDFLAGS:Flags that cgo will pass to the compiler when linking.'
+          'PKG_CONFIG:Path to pkg-config tool.'
+          'GOGCCFLAGS:Flags that gccgo command.'
+          )
+          _arguments \
+            "*: :{_describe 'envs' _envs}" \
+          ;;
+
         fix)
           _arguments \
             '*: :__go_packages'
