@@ -35,7 +35,6 @@ function _dep() {
   declare -A opt_args
 
   local -a commands
-
   commands=(
   'init:Initialize a new project with manifest and lock files'
   "status:Report the status of the project's dependencies"
@@ -44,7 +43,7 @@ function _dep() {
   'version:Show the dep version information'
   )
 
-  __go_packages() {
+  _go_packages() {
     local gopaths
     declare -a gopaths
     gopaths=("${(s/:/)$(go env GOPATH)}")
@@ -72,7 +71,7 @@ function _dep() {
   #     done
   #   else
   #     _arguments \
-  #       '*:gopath packages:__go_packages -qS@' \
+  #       '*:gopath packages:_go_packages -qS@' \
   #       && ret=0
   #   fi
   #
@@ -80,8 +79,7 @@ function _dep() {
   # }
 
   _arguments -C \
-    '-help[show help]' \
-    "1: :{_describe 'dep subcommand' commands}" \
+    "1: :{_describe 'dep ubcommand' commands}" \
     '*:: :->args' \
     && ret=0
 
@@ -110,35 +108,27 @@ function _dep() {
             '-unused[only show unused dependencies]' \
             '-v[enable verbose logging]' \
             '-help[show help]' \
-            '*: :__go_packages' \
+            '*: :_go_packages' \
             && ret=1
-
-            '-detailed[report more detailed status]' \
-            '-dot[output the dependency graph in GraphViz format]' \
-            '-f[output in text/template format (default: <none>)]:text/template format' \
-            '-json[output in JSON format]' \
-            '-missing[only show missing dependencies]' \
-            '-modified[only show modified dependencies]' \
-            '-old[only show out-of-date dependencies]' \
-            '-unused[only show unused dependencies]' \
-            '-v[enable verbose logging]' \
           ;;
         ensure)
           _arguments \
             '-add[add new dependencies, or populate Gopkg.toml with constraints for existing dependencies]' \
             '-dry-run[only report the changes that would be made]' \
             '-examples[print detailed usage examples]' \
+            '-help[show help]' \
             '-no-vendor[update Gopkg.lock (if needed), but do not update vendor/]' \
             '-update[update the named dependencies (or all, if none are named) in Gopkg.lock to the latest allowed by Gopkg.toml]' \
             '-v[enable verbose logging]' \
             '-vendor-only[populate vendor/ from Gopkg.lock without updating it first]' \
             '-help[show help]' \
-            '*: :__go_packages' \
+            '*: :_go_packages' \
             && ret=1
           ;;
         (prune|version)
           _arguments \
             '-v[enable verbose logging]' \
+            '-help[show help]' \
             && ret=1
           ;;
       esac
