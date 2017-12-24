@@ -1,8 +1,8 @@
 #compdef minikube
 
-typeset -A opt_args
-
 _minikube() {
+
+  typeset -A opt_args
   local -a commands
 
   commands=(
