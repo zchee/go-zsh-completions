@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# rsc.io/2fa
+#
 # usage:
 #         2fa -add [-7] [-8] [-hotp] keyname
 #         2fa -list

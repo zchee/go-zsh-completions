@@ -32,6 +32,63 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
+#
+# github.com/monochromegane/the_platinum_searcher/cmd/pt
+#
+# Usage:
+#   pt [OPTIONS] PATTERN [PATH]
+#
+# Application Options:
+#       --version             Show version
+#
+# Output Options:
+#       --color               Print color codes in results (default: true)
+#       --nocolor             Don't print color codes in results (default: false)
+#       --color-line-number=  Color codes for line numbers (default: 1;33)
+#       --color-path=         Color codes for path names (default: 1;32)
+#       --color-match=        Color codes for result matches (default: 30;43)
+#       --group               Print file name at header (default: true)
+#       --nogroup             Don't print file name at header (default: false)
+#   -0, --null                Separate filenames with null (for 'xargs -0')
+#                             (default: false)
+#       --column              Print column (default: false)
+#       --numbers             Print Line number. (default: true)
+#   -N, --nonumbers           Omit Line number. (default: false)
+#   -A, --after=              Print lines after match
+#   -B, --before=             Print lines before match
+#   -C, --context=            Print lines before and after match
+#   -l, --files-with-matches  Only print filenames that contain matches
+#   -c, --count               Only print the number of matching lines for each
+#                             input file.
+#   -o, --output-encode=      Specify output encoding (none, jis, sjis, euc)
+#
+# Search Options:
+#   -e                        Parse PATTERN as a regular expression (default:
+#                             false). Accepted syntax is the same as
+#                             https://github.com/google/re2/wiki/Syntax except
+#                             from \C
+#   -i, --ignore-case         Match case insensitively
+#   -S, --smart-case          Match case insensitively unless PATTERN contains
+#                             uppercase characters
+#   -w, --word-regexp         Only match whole words
+#       --ignore=             Ignore files/directories matching pattern (default:
+#                             [.git, .hg, .svn, *tags, *.svg, doxygen, .DS_Store,
+#                             *.zwc, __pycache__, venv, images, *.min.*, img,
+#                             fonts, *.recording])
+#       --vcs-ignore=         VCS ignore files (default: .gitignore)
+#       --global-gitignore    Use git's global gitignore file for ignore patterns
+#       --home-ptignore       Use $Home/.ptignore file for ignore patterns
+#   -U, --skip-vcs-ignores    Don't use VCS ignore file for ignore patterns
+#   -g=                       Print filenames matching PATTERN
+#   -G, --file-search-regexp= PATTERN Limit search to filenames matching PATTERN
+#       --depth=              Search up to NUM directories deep (default: 25)
+#   -f, --follow              Follow symlinks
+#       --hidden              Search hidden files and directories
+#
+# Help Options:
+#   -h, --help                Show this help message
+#
+# -----------------------------------------------------------------------------
 
 function _pt() {
   local context curcontext=$curcontext state line

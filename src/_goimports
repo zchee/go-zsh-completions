@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# golang.org/x/tools/cmd/goimports
+#
 # usage: goimports [flags] [path ...]
 #   -cpuprofile string
 #         CPU profile output

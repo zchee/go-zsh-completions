@@ -33,8 +33,42 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
-# poule - Mass interact with GitHub issues & pull requests
-#    https://github.com/icecrime/poule
+# github.com/icecrime/poule
+#
+# NAME:
+#    poule - Mass interact with GitHub issues & pull requests
+#
+# USAGE:
+#    poule [global options] command [command options] [arguments...]
+#   
+# VERSION:
+#    0.4.0
+#   
+# COMMANDS:
+#      batch     Run groups of commands described in files
+#      serve     Operate as a daemon listening on GitHub webhooks
+#      validate  Validate a Poule repository configuration file
+#      help, h   Shows a list of commands or help for one command
+#
+#    Operations:
+#      ci-label-clean     Clean CI failure labels
+#      dco-check          Check DCO on pull requests
+#      label              Apply label(s) to items which title or body matches a pattern
+#      poule-updater      Update the poule configuration for the specified repository
+#      prune              Prune outdated issues
+#      random-assign      Assign items to a random username from the `users` list.
+#      rebuild            Rebuild configurations of a given state
+#      version-label      Apply version labels to issues
+#      version-milestone  Attach merged pull requests to the upcoming version's milestone
+#
+# GLOBAL OPTIONS:
+#    --debug, -D         enable debug logging
+#    --dry-run           simulate operations
+#    --repository value  GitHub repository
+#    --token value       GitHub API token [$POULE_GITHUB_TOKEN]
+#    --token-file value  GitHub API token file [$POULE_GITHUB_TOKEN_FILE]
+#    --help, -h          show help
+#    --version, -v       print the version
 #
 # -----------------------------------------------------------------------------
 

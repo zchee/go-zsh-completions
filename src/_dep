@@ -29,6 +29,30 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
+#
+# github.com/golang/dep
+#
+# Dep is a tool for managing dependencies for Go projects
+#
+# Usage: "dep [command]"
+#
+# Commands:
+#
+#   init     Initialize a new project with manifest and lock files
+#   status   Report the status of the project's dependencies
+#   ensure   Ensure a dependency is safely vendored in the project
+#   prune    Prune the vendor tree of unused packages
+#   version  Show the dep version information
+#
+# Examples:
+#   dep init                               set up a new project
+#   dep ensure                             install the project's dependencies
+#   dep ensure -update                     update the locked versions of all dependencies
+#   dep ensure -add github.com/pkg/errors  add a dependency to the project
+#
+# Use "dep help [command]" for more information about a command.
+#
+# -----------------------------------------------------------------------------
 
 function _dep() {
   local context curcontext=$curcontext state line ret=1

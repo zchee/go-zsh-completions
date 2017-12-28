@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# github.com/spinnaker/roer/cmd/roer
+#
 # $ roer --help
 # NAME:
 #    roer - Spinnaker CLI

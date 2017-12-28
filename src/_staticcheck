@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# honnef.co/go/tools/cmd/staticcheck
+#
 # Usage of staticcheck:
 #         staticcheck [flags] # runs on package in current directory
 #         staticcheck [flags] packages

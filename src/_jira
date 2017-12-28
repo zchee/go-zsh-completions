@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# github.com/Netflix-Skunkworks/go-jira/cmd/jira
+#
 # usage: jira [<flags>] <command> [<args> ...]
 #
 # Jira Command Line Interface

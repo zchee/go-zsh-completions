@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# golang.org/x/perf/cmd/benchstat
+#
 # usage: benchstat [options] old.txt [new.txt] [more.txt ...]
 # options:
 #   -alpha α

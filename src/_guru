@@ -33,7 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
-# Run 'guru -help' for more information.
+# golang.org/x/tools/cmd/guru
+#
 # Go source code guru.
 # Usage: guru [flags] <mode> <position>
 #

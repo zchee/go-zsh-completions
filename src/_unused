@@ -32,6 +32,49 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
+#
+# honnef.co/go/tools/cmd/unused
+#
+# Usage of unused:
+#  unused [flags] # runs on package in current directory
+#  unused [flags] packages
+#  unused [flags] directory
+#  unused [flags] files... # must be a single package
+# Flags:
+#   -consts
+#      Report unused constants (default true)
+#   -debug file
+#      Write a debug graph to file. Existing files will be overwritten.
+#   -exported
+#      Treat arguments as a program and report unused exported identifiers
+#   -f format
+#      Output format (valid choices are 'text' and 'json') (default "text")
+#   -fields
+#      Report unused fields (default true)
+#   -funcs
+#      Report unused functions and methods (default true)
+#   -go version
+#      Target Go version in the format '1.x' (default 1.10)
+#   -ignore string
+#      Space separated list of checks to ignore, in the following format: 'import/path/file.go:Check1,Check2,...' Both the import path and file name sections support globbing, e.g. 'os/exec/*_test.go'
+#   -min_confidence float
+#      Deprecated; use -ignore instead
+#   -reflect
+#      Consider identifiers as used when it's likely they'll be accessed via reflection (default true)
+#   -show-ignored
+#      Don't filter ignored problems
+#   -tags build tags
+#      List of build tags
+#   -tests
+#      Include tests (default true)
+#   -types
+#      Report unused types (default true)
+#   -vars
+#      Report unused variables (default true)
+#   -version
+#      Print version and exit
+#
+# -----------------------------------------------------------------------------
 
 function _unused() {
   local context curcontext=$curcontext state line ret=1

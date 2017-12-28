@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# github.com/go-interpreter/wagon/cmd/wasm-run
+#
 # Usage of wasm-run:
 #   -v    enable/disable verbose mode
 #   -verify-module

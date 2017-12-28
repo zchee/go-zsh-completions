@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# github.com/golang/lint/golint
+#
 # Usage of golint:
 #         golint [flags] # runs on package in current directory
 #         golint [flags] [packages]

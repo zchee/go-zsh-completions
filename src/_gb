@@ -1,11 +1,72 @@
 #compdef gb
 
-typeset -A opt_args
-# ?
-# zstyle ':completion:*' ambiguous false
+# -----------------------------------------------------------------------------
+# The BSD-3-Clause License
+#
+# Copyright (c) 2017, Koichi Shiraishi
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the name of que nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+#
+# github.com/constabulary/gb/cmd/gb
+#
+# gb, a project based build tool for the Go programming language.
+#
+# Usage:
+#
+#         gb command [arguments]
+#
+# The commands are:
+#
+#         build       build a package
+#         doc         show documentation for a package or symbol
+#         env         print project environment variables
+#         generate    generate Go files by processing source
+#         info        info returns information about this project
+#         list        list the packages named by the importpaths
+#         test        test packages
+#
+# Use "gb help [command]" for more information about a command.
+#
+# Additional help topics:
+#
+#         plugin      plugin information
+#         project     gb project layout
+#
+# Use "gb help [topic]" for more information about that topic.
+#
+# -----------------------------------------------------------------------------
 
-_gb() {
-  local -a commands __build_flags_packags __build_flags_files test_flags
+function _gb() {
+  local context curcontext=$curcontext state line ret=1
+  declare -A opt_args
+
+  local -a commands
   commands=(
   'build:build a package'
   'depset'
@@ -26,7 +87,7 @@ _gb() {
     commands+='gae:tool for managing Google Appengine applications with gb.'
   fi
 
-  _arguments \
+  _arguments -C \
     "1: :{_describe 'gb command' commands}" \
     '*:: :->args'
 
@@ -276,6 +337,7 @@ _gb() {
         esac
       }
 
+      local -a test_flags
       test_flags=(
       "-c[compile but don't run test]"
       '-bench[run benchmarks matching the regular expression]:regexp'
@@ -305,7 +367,7 @@ _gb() {
       '*:build flags:__build_flags_packags'
       )
 
-      __go_packages() {
+      _go_packages() {
         local gopaths
         declare -a gopaths
         gopaths=("${(s/:/)$(go env GOPATH)}")
@@ -314,7 +376,7 @@ _gb() {
         done
       }
 
-      __gb_vendor_packages() {
+      _gb_vendor_packages() {
         local gb_vendor
         declare -a gb_vendor
         gb_vendor=("${(s/:/)$(gb env GB_SRC_PATH | awk -F : '{print $2}')}")
@@ -341,7 +403,7 @@ _gb() {
         doc)
           _arguments \
             '-d[enable debug output]' \
-            '*:importpaths:__go_packages'
+            '*:importpaths:_go_packages'
             ;;
 
         env)
@@ -371,7 +433,7 @@ _gb() {
           _arguments \
             '-d[enable debug output]' \
             '-run=[specifies a regular expression to select directives]:regex' \
-            "*:args:{ _alternative ':importpaths:__go_packages' _files }"
+            "*:args:{ _alternative ':importpaths:_go_packages' _files }"
             ;;
 
         info)
@@ -418,7 +480,8 @@ _gb() {
             args)
               case $words[1] in
                 addr2line)
-                  _files
+                  _arguments \
+                    '*:files:_files'
                   ;;
 
                 fetch)
@@ -429,7 +492,7 @@ _gb() {
                     '-tag[fetch the specified tag]' \
                     '-revision[fetch the specific revision from the branch (if supplied)]' \
                     '-precaire[allow the use of insecure protocols.]' \
-                    '*:importpaths:__go_packages'
+                    '*:importpaths:_go_packages'
                   ;;
 
                 update)
@@ -453,7 +516,7 @@ _gb() {
 
                 purge)
                   _arguments \
-                    '*:importpaths:__go_packages'
+                    '*:importpaths:_go_packages'
                   ;;
 
                 restore)
@@ -490,8 +553,10 @@ _gb() {
       esac
       ;;
   esac
+
+  return ret
 }
 
-_gb
+_gb "$*"
 
-# vim:filetype=zsh:softtabstop=4:shiftwidth=4:tabstop=4
+# vim:ft=zsh:et:sts=2:sw=2

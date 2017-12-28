@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# github.com/go-interpreter/wagon/cmd/wasm-run
+#
 # Usage: wasm-dump [options] file1.wasm [file2.wasm [...]]
 #
 # ex:

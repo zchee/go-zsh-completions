@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# golang.org/x/tools/cmd/benchcmp
+#
 # usage: benchcmp old.txt new.txt
 #
 #   -best

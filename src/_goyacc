@@ -32,6 +32,36 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
+# 
+# golang.org/x/tools/cmd/goyacc
+#
+# Usage of goyacc:
+#   -c report state closures
+#   -cr
+#      check all states are reducible
+#   -dlval string
+#      debug value (runtime yyDebug >= 3) (default "lval")
+#   -dlvalf string
+#      debug format of -dlval (runtime yyDebug >= 3) (default "%+v")
+#   -ex
+#      explain how were conflicts resolved
+#   -fs
+#      emit the follow set table
+#   -l disable line directives (for compatibility ony - ignored)
+#   -la
+#      report all lookahead sets
+#   -o string
+#      parser output (default "y.go")
+#   -p string
+#      name prefix to use in generated code (default "yy")
+#   -v string
+#      create grammar report (default "y.output")
+#   -xe string
+#      generate eXtra errors from examples source file
+#   -xegen string
+#      generate error from examples source file automatically from the grammar
+#
+# -----------------------------------------------------------------------------
 
 function _goyacc() {
   local context curcontext=$curcontext state line ret=1

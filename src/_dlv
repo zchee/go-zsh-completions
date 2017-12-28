@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# github.com/derekparker/delve/cmd/dlv
+#
 # Delve is a source level debugger for Go programs.
 #
 # Delve enables you to interact with your program by controlling the execution of the process,

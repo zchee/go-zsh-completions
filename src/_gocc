@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# github.com/goccmack/gocc
+#
 # usage: gocc flags bnf_file
 #
 #   bnf_file: contains the BNF grammar
@@ -47,13 +49,15 @@
 #   -no_lexer
 #         do not generate a lexer
 #   -o string
-#         output dir.
+#         output dir. (default "/Users/zchee/go/src/github.com/goccmack/gocc")
 #   -p string
-#         package
+#         package (default "github.com/goccmack/gocc")
 #   -u    allow unreachable productions
 #   -v    verbose
 #   -zip
 #         zip the actiontable and gototable (experimental)
+#
+# -----------------------------------------------------------------------------
 
 function _gocc() {
   local context curcontext=$curcontext state line ret=1

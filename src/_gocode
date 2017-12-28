@@ -32,25 +32,26 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
-# USAGE:
 #
-# gocode [-s] [-f=<format>] [-in=<path>] [-sock=<type>] [-addr=<addr>]
+# github.com/nsf/gocode
+#
+# Usage: gocode [-s] [-f=<format>] [-in=<path>] [-sock=<type>] [-addr=<addr>]
 #        <command> [<args>]
 #
 # Flags:
 #   -addr string
-#         address for tcp socket (default "127.0.0.1:37373")
+#      address for tcp socket (default "127.0.0.1:37373")
 #   -debug
-#         enable server-side debug mode
+#      enable server-side debug mode
 #   -f string
-#         output format (vim | emacs | nice | csv | json) (default "nice")
+#      output format (vim | emacs | nice | csv | csv-with-package | json) (default "nice")
 #   -in string
-#         use this file instead of stdin input
+#      use this file instead of stdin input
 #   -profile int
-#         port on which to expose profiling information for pprof; 0 to disable profiling
-#   -s    run a server instead of a client
+#      port on which to expose profiling information for pprof; 0 to disable profiling
+#   -s run a server instead of a client
 #   -sock string
-#         socket type (unix | tcp) (default "unix")
+#      socket type (unix | tcp) (default "unix")
 #
 # Commands:
 #   autocomplete [<path>] <offset>     main autocompletion command
@@ -58,6 +59,7 @@
 #   status                             gocode daemon status report
 #   drop-cache                         drop gocode daemon's cache
 #   set [<name> [<value>]]             list or set config options
+# #
 # -----------------------------------------------------------------------------
 
 function _gocode() {
@@ -75,9 +77,9 @@ function _gocode() {
   )
 
   _arguments -C \
-    '-addr[address for tcp socket]:tcp address (default "127.0.0.1\:37373")' \
+    '-addr[address for tcp socket]:tcp address (default "127.0.0.1\:37373"):addr' \
     '-debug[enable server-side debug mode]' \
-    '-f[output format]:output format (default "nice"):(vim emacs nice csv json)' \
+    '-f[output format]:output format (default "nice"):(vim emacs nice csv csv-with-package json)' \
     '-in[use this file instead of stdin input]:input file:_files' \
     '-profile[port on which to expose profiling information for pprof; 0 to disable profiling]' \
     '-s[run a server instead of a client]' \
@@ -102,6 +104,7 @@ function _gocode() {
           'close-timeout'
           'unimported-packages'
           )
+
           _arguments \
             "1: :{_describe 'set options' set_options}" \
             '*:: :->args' \
@@ -110,20 +113,10 @@ function _gocode() {
             case $state in
               propose-builtins)
                 _value \
-                  'torf' \
                   'true' \
                   'false'
               ;;
             esac
-          ;;
-        subcommand2)
-          _arguments \
-            '-bar[subcommand2 -bar argument comment]' \
-            '-baz[subcommand2 -baz argument comment]'
-            '*:devices:_devices'
-          ;;
-        subcommand3)
-          _arguments \
           ;;
       esac
       ;;

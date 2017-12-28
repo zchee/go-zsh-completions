@@ -33,6 +33,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 #
+# github.com/GoogleCloudPlatform/container-diff
+#
 # container-diff is a CLI tool for analyzing and comparing container images.
 #
 # Usage:
