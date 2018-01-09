@@ -74,9 +74,6 @@ function _$BIN() {
             '-baz[subcommand2 -baz argument comment]'
             '*:devices:_devices'
           ;;
-        subcommand3)
-          _arguments \
-          ;;
       esac
       ;;
   esac
