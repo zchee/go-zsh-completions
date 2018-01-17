@@ -519,18 +519,6 @@ function _jira() {
   declare -A opt_args
 
   local -a commands global_flags
-
-  global_flags=(
-  '--help:Show context-sensitive help (also try --help-long and --help-man).'
-  {-v,--verbose}:'Increase verbosity for debugging'
-  {-e,--endpoint}:'Base URI to use for Jira:ENDPOINT'
-  {-k,--insecure}:'Disable TLS certificate verification'
-  {-Q,--quiet}:'Suppress output to console'
-  '--unixproxy:Path for a unix-socket proxy:UNIXPROXY'
-  '--socksproxy:Address for a socks proxy:SOCKSPROXY'
-  {-u,--user}:'Login name used for authentication with Jira service:USER'
-  )
-
   commands=(
   'help:Show help'
   'version:Prints version'
@@ -581,8 +569,20 @@ function _jira() {
   'worklog:Manage worklog'
   )
 
-  _arguments -C \
-    ${global_flags[@]} \
+  global_flags=(
+  '--help:Show context-sensitive help'
+  '--help-long:Show long help'
+  '--help-man:Show man page style help'
+  {-v,--verbose}':Increase verbosity for debugging'
+  {-e,--endpoint}':Base URI to use for Jira:ENDPOINT'
+  {-k,--insecure}':Disable TLS certificate verification'
+  {-Q,--quiet}':Suppress output to console'
+  '--unixproxy:Path for a unix-socket proxy:UNIXPROXY'
+  '--socksproxy:Address for a socks proxy:SOCKSPROXY'
+  {-u,--user}':Login name used for authentication with Jira service:USER'
+  )
+
+  _arguments \
     "1: :{_describe 'jira command' commands}" \
     '*:: :->args' \
     && ret=0
@@ -592,185 +592,594 @@ function _jira() {
       case $words[1] in
         (help,version,login,logout)
           ;;
+
         acknowledge)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[...Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         assign)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--default[use default user for assignee]' \
+            '1:<ISSUE>' \
+            '2:[<ASSIGNEE>]'
           ;;
+
         attach)
+          local -a attach_cmds
+          attach_cmds=(
+          'create:Attach file to issue'
+          'get:Fetch attachment'
+          'list:Prints attachment details for issue'
+          'remove:Delete attachment'
+          )
+
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            "1: :{_describe 'attach subcommand' attach_cmds}" \
+            '*:: :->args'
+
+            case $words[1] in
+              create)
+                _arguments \
+                  {-b,--browse}'[Open issue(s) in browser after operation]' \
+                  '--saveFile=[Write attachment information as yaml to file]:SAVEFILE' \
+                  {-f,--filename=}'[Filename to use for attachment]:FILENAME' \
+                  '1:<ISSUE>' \
+                  '2:[<ASSIGNEE>]'
+                ;;
+              get)
+                _arguments \
+                  {-o,--output=}'[Write attachment to specified file name, '-' for stdout]:OUTPUT' \
+                  '1:[<ATTACHMENT-ID>]'
+                ;;
+              list)
+                _arguments \
+                  {-b,--browse}'[Open issue(s) in browser after operation]' \
+                  {-t,--template=}'[Template to use for output]:TEMPLATE' \
+                  '1:<ISSUE>'
+                ;;
+              remove)
+                _arguments \
+                  '1:[<ATTACHMENT-ID>]'
+                ;;
+            esac
           ;;
+
         backlog)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--noedit[Disable opening the editor]' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         block)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--editor=[Editor to use]:EDITOR' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            {-m,--comment=}'[Comment message when marking issue as blocker]:COMMENT' \
+            '1:<BLOCKER>' \
+            '2:<ISSUE>'
           ;;
+
         browse)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            '1:<ISSUE>'
           ;;
+
         close)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         comment)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--editor=[Editor to use]:EDITOR' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            '1:<ISSUE>'
           ;;
+
         component)
+          local -a component_cmds
+          component_cmds=(
+          'add:Add component'
+          )
+
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            "1: :{_describe 'component subcommand' component_cmds}" \
+            '*:: :->args'
+
+            case $words[1] in
+              add)
+                _arguments \
+                  '--editor=[Editor to use]:EDITOR' \
+                  {-t,--template=}'[Template to use for output]:TEMPLATE' \
+                  '--noedit[Disable opening the editor]' \
+                  {-p,--project=}'[project to create component in]:PROJECT' \
+                  {-n,--name=}'[name of component]:NAME' \
+                  {-d,--description=}'[description of component]:DESCRIPTION' \
+                  {-l,--lead=}'[person that acts as lead for component]:LEAD'
+                ;;
+            esac
           ;;
+
         components)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+            {-p,--project=}'[project to create component in]:PROJECT'
           ;;
+
         create)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--editor=[Editor to use]:EDITOR' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-p,--project=}'[project to create component in]:PROJECT' \
+            {-i,--issuetype=}'[issuetype in to create]:ISSUETYPE' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--saveFile=[Write issue as yaml to file]:SAVEFILE'
           ;;
+
         createmeta)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+            {-p,--project=}'[project to create component in]:PROJECT' \
+            {-i,--issuetype=}'[issuetype in to create]:ISSUETYPE'
           ;;
+
         done)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         dup)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--editor=[Editor to use]:EDITOR' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            {-m,--comment=}'[Comment message when marking issue as duplicate]:COMMENT' \
+            '1:<DUPLICATE>' \
+            '2:<ISSUE>'
           ;;
+
         edit)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--editor=[Editor to use]:EDITOR' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-n,--named-query=}'[The name of a query in the `queries` configuration]:NAMED-QUERY' \
+            {-q,--query=}'[Jira Query Language (JQL) expression for the search]:QUERY' \
+            {-m,--comment=}'[Comment message when marking issue as duplicate]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '1:<ISSUE>'
           ;;
+
         editmeta)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+            '1:<ISSUE>'
           ;;
+
         epic)
+          local -a epic_cmds
+          epic_cmds=(
+          'add:Add issues to Epic'
+          'create:Create Epic'
+          'list:Prints list of issues for an epic with optional search criteria'
+          'remove:Remove issues from Epic'
+          )
+
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            "1: :{_describe 'epic subcommand' epic_cmds}" \
+            '*:: :->args'
+
+            case $words[1] in
+              add)
+                _arguments \
+                  '1:<EPIC>' \
+                  '*:<ISSUE>'
+                ;;
+              create)
+                _arguments \
+                  {-b,--browse}'[Open issue(s) in browser after operation]' \
+                  '--editor=[Editor to use]:EDITOR' \
+                  {-t,--template=}'[Template to use for output]:TEMPLATE' \
+                  '--noedit[Disable opening the editor]' \
+                  {-p,--project=}'[project to create epic in]:PROJECT' \
+                  {-n,--epic-name=}'[Epic Name]:EPIC-NAME' \
+                  {-m,--comment=}'[Comment message for epic]:COMMENT' \
+                  {-o,--override=}'[Set epic property]:OVERRIDE' \
+                  '--saveFile=[Write epic as yaml to file]:SAVEFILE'
+                ;;
+              list)
+                _arguments \
+                  {-t,--template=}'[Template to use for output]:TEMPLATE' \
+                  '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+                  {-a,--assignee=}'[User assigned the issue]:ASSIGNEE' \
+                  {-c,--component=}'[Component to search for]:COMPONENT' \
+                  {-i,--issuetype=}'[issuetype in to create]:ISSUETYPE' \
+                  {-l, --limit=}'[Maximum number of results to return in search]:LIMIT' \
+                  {-p,--project=}'[project to create epic in]:PROJECT' \
+                  {-n,--named-query=}'[The name of a query in the `queries` configuration]:NAMED-QUERY' \
+                  {-q,--query=}'[Jira Query Language (JQL) expression for the search]:QUERY' \
+                  {-f,--queryfields=}'[Fields that are used in "list" template]:QUERYFIELDS' \
+                  {-r,--reporter=}'[Reporter to search for]:REPORTER' \
+                  {-S,--status=}'[Filter on issue status]:STATUS' \
+                  {-s,--sort=}'[Sort order to return]:SORT' \
+                  {-w,--watcher=}'[Watcher to search for]:WATCHER' \
+                  '1:<EPIC>'
+                ;;
+              remove)
+                _arguments \
+                  '*:<ISSUE>'
+                ;;
+            esac
           ;;
+
         export-templates)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}'[Template to export]:TEMPLATE' \
+            {-d,--dir=}'[directory to write tempates to]:DIR'
           ;;
+
         fields)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ'
           ;;
+
         in-progress)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         issuelink)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--editor=[Editor to use]:EDITOR' \
+            {-t,--template=}'[Template to export]:TEMPLATE' \
+            {-m,--comment=}'[Comment message when linking issue]:COMMENT' \
+            '1:<OUTWARDISSUE>' \
+            '2:<ISSUELINKTYPE>' \
+            '3:<INWARDISSUE>'
           ;;
+
         issuelinktypes)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}'[Template to export]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ'
           ;;
+
         issuetypes)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}'[Template to export]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+            {-p,--project=}'[project to list issueTypes]:PROJECT'
           ;;
+
         labels)
+          local -a labels_cmds
+          labels_cmds=(
+          'add:Add labels to an issue'
+          'remove:Remove labels from an issue'
+          'set:Set labels on an issue'
+          )
+
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            "1: :{_describe 'labels subcommand' labels_cmds}" \
+            '*:: :->args'
+
+            case $words[1] in
+              add)
+                _arguments \
+                  {-b,--browse}'[Open issue(s) in browser after operation]' \
+                  '1:<ISSUE>' \
+                  '*:<LABEL>'
+                ;;
+              remove)
+                _arguments \
+                  {-b,--browse}'[Open issue(s) in browser after operation]' \
+                  '1:<ISSUE>' \
+                  '*:<LABEL>'
+                ;;
+              set)
+                _arguments \
+                  {-b,--browse}'[Open issue(s) in browser after operation]' \
+                  '1:<ISSUE>' \
+                  '*:<LABEL>'
+                ;;
+            esac
           ;;
+
         list)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}'[Template to use for output]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output]:GJQ' \
+            {-a,--assignee=}"[User assigned the issue]:ASSIGNEE:($(id -u -n))" \
+            {-c,--component=}'[Component to search for]:COMPONENT' \
+            {-i,--issuetype=}'[Issue type to search for]:ISSUETYPE' \
+            {-l,--limit=}'[Maximum number of results to return in search]:LIMIT' \
+            {-p,--project=}'[Project to search for]:PROJECT' \
+            {-n,--named-query=}'[The name of a query in the `queries` configuration]:NAMED-QUERY' \
+            {-q,--query=}'[Jira Query Language (JQL) expression for the search]:QUERY' \
+            {-f,--queryfields=}'[Fields that are used in "list" template]:QUERYFIELDS' \
+            {-r,--reporter=}'[Reporter to search for]:REPORTER' \
+            {-S,--status=}'[Filter on issue status]:STATUS' \
+            {-s,--sort=}'[Sort order to return]:SORT' \
+            {-w,--watcher=}'[Watcher to search for]:WATCHER'
           ;;
-        login)
-          _arguments \
-            '*:file:_files'
-          ;;
-        logout)
-          _arguments \
-            '*:file:_files'
-          ;;
+
         rank)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '1:<FIRST-ISSUE>' \
+            '2:where:(after before)' \
+            '3:<SECOND-ISSUE>'
           ;;
+
         reopen)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         request)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+            {-M,--method='[HTTP request method to use]:METHOD' \
+            '1:<API>' \
+            '2:[<JSON>]'
           ;;
+
         resolve)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         start)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         stop)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         subtask)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--editor=[Editor to use]:EDITOR' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-p,--project=}'[project to subtask issue in]:PROJECT' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '1:<ISSUE>'
           ;;
+
         take)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--default[use default user for assignee]' \
+            '1:<ISSUE>' \
+            '2:[<ASSIGNEE>]'
           ;;
+
         todo)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<ISSUE>'
           ;;
+
         transition)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--noedit[Disable opening the editor]' \
+            {-m,--comment=}'[Comment message for issue]:COMMENT' \
+            {-o,--override=}'[Set issue property]:OVERRIDE' \
+            '--resolution=[Set resolution on transition]:RESOLUTION' \
+            '1:<TRANSITION>' \
+            '2:<ISSUE>'
           ;;
+
         transitions)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+            '1:<ISSUE>'
           ;;
+
         transmeta)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}':[Template to use for output]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+            '1:<ISSUE>'
           ;;
+
         unassign)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            '--default[use default user for assignee]' \
+            '1:<ISSUE>' \
+            '2:[<ASSIGNEE>]'
           ;;
+
         unexport-templates)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-t,--template=}'[Template to export]:TEMPLATE' \
+            {-d,--dir=}'[directory to write tempates to]:DIR'
           ;;
+
         view)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-t,--template=}'[Template to export]:TEMPLATE' \
+            '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+            '--expand=[field to expand for the issue]:EXPAND' \
+            '--field=[field to return for the issue]:FIELD' \
+            '--property=[property to return for issue]:PROPERTY' \
+            '1:<ISSUE>'
           ;;
+
         vote)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-d,--down}'[downvote the issue]' \
+            '1:<ISSUE>'
           ;;
+
         watch)
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            {-b,--browse}'[Open issue(s) in browser after operation]' \
+            {-r,--remove}'[remove watcher from issue]' \
+            '1:<ISSUE>' \
+            '2:[<WATCHER>]'
           ;;
+
         worklog)
+          local -a worklog_cmds
+          worklog_cmds=(
+          'add:Add a worklog to an issue'
+          'list:Prints the worklog data for given issue'
+          )
+
           _arguments \
-            '*:file:_files'
+            ": :{_describe 'global flags' global_flags}" \
+            "1: :{_describe 'worklog subcommand' worklog_cmds}" \
+            '*:: :->args'
+
+            case $words[1] in
+              add)
+                _arguments \
+                  {-b,--browse}'[Open issue(s) in browser after operation]' \
+                  '--editor=[Editor to use]:EDITOR' \
+                  {-t,--template=}':[Template to use for output]:TEMPLATE' \
+                  '--noedit[Disable opening the editor]' \
+                  {-m,--comment=}'[Comment message for worklog]:COMMENT' \
+                  {-T,--time-spent=}'[Time spent working on issue]:TIME-SPENT' \
+                  {-S,--started=}'[Time you started work]:STARTED' \
+                  '1:<ISSUE>'
+                ;;
+              list)
+                _arguments \
+                  {-b,--browse}'[Open issue(s) in browser after operation]' \
+                  {-t,--template=}':[Template to use for output]:TEMPLATE' \
+                  '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
+                  '1:<ISSUE>'
+                ;;
+            esac
           ;;
       esac
       ;;
