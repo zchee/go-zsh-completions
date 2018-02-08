@@ -582,6 +582,36 @@ function _jira() {
   {-u,--user}':Login name used for authentication with Jira service:USER'
   )
 
+  _templates() {
+    _values \
+      'template' \
+      'attach-list' \
+      'comment' \
+      'component-add' \
+      'components' \
+      'create' \
+      'createmeta' \
+      'debug' \
+      'edit' \
+      'editmeta' \
+      'epic-create' \
+      'epic-list' \
+      'fields' \
+      'issuelinktypes' \
+      'issuetypes' \
+      'json' \
+      'list' \
+      'request' \
+      'subtask' \
+      'table' \
+      'transition' \
+      'transitions' \
+      'transmeta' \
+      'view' \
+      'worklog' \
+      'worklogs'
+  }
+
   _arguments \
     "1: :{_describe 'jira command' commands}" \
     '*:: :->args' \
@@ -602,7 +632,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[...Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         assign)
@@ -610,7 +640,7 @@ function _jira() {
             ": :{_describe 'global flags' global_flags}" \
             {-b,--browse}'[Open issue(s) in browser after operation]' \
             '--default[use default user for assignee]' \
-            '1:<ISSUE>' \
+            '*:<ISSUE>' \
             '2:[<ASSIGNEE>]'
           ;;
 
@@ -634,23 +664,23 @@ function _jira() {
                   {-b,--browse}'[Open issue(s) in browser after operation]' \
                   '--saveFile=[Write attachment information as yaml to file]:SAVEFILE' \
                   {-f,--filename=}'[Filename to use for attachment]:FILENAME' \
-                  '1:<ISSUE>' \
+                  '*:<ISSUE>' \
                   '2:[<ASSIGNEE>]'
                 ;;
               get)
                 _arguments \
                   {-o,--output=}'[Write attachment to specified file name, '-' for stdout]:OUTPUT' \
-                  '1:[<ATTACHMENT-ID>]'
+                  '*:[<ATTACHMENT-ID>]'
                 ;;
               list)
                 _arguments \
                   {-b,--browse}'[Open issue(s) in browser after operation]' \
                   {-t,--template=}'[Template to use for output]:TEMPLATE' \
-                  '1:<ISSUE>'
+                  '*:<ISSUE>'
                 ;;
               remove)
                 _arguments \
-                  '1:[<ATTACHMENT-ID>]'
+                  '*:[<ATTACHMENT-ID>]'
                 ;;
             esac
           ;;
@@ -662,7 +692,7 @@ function _jira() {
             '--noedit[Disable opening the editor]' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         block)
@@ -672,14 +702,14 @@ function _jira() {
             '--editor=[Editor to use]:EDITOR' \
             {-t,--template=}'[Template to use for output]:TEMPLATE' \
             {-m,--comment=}'[Comment message when marking issue as blocker]:COMMENT' \
-            '1:<BLOCKER>' \
+            '*:<BLOCKER>' \
             '2:<ISSUE>'
           ;;
 
         browse)
           _arguments \
             ": :{_describe 'global flags' global_flags}" \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         close)
@@ -691,7 +721,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         comment)
@@ -702,7 +732,7 @@ function _jira() {
             {-t,--template=}'[Template to use for output]:TEMPLATE' \
             '--noedit[Disable opening the editor]' \
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         component)
@@ -770,7 +800,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         dup)
@@ -780,7 +810,7 @@ function _jira() {
             '--editor=[Editor to use]:EDITOR' \
             {-t,--template=}'[Template to use for output]:TEMPLATE' \
             {-m,--comment=}'[Comment message when marking issue as duplicate]:COMMENT' \
-            '1:<DUPLICATE>' \
+            '*:<DUPLICATE>' \
             '2:<ISSUE>'
           ;;
 
@@ -795,7 +825,7 @@ function _jira() {
             {-q,--query=}'[Jira Query Language (JQL) expression for the search]:QUERY' \
             {-m,--comment=}'[Comment message when marking issue as duplicate]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         editmeta)
@@ -804,7 +834,7 @@ function _jira() {
             {-b,--browse}'[Open issue(s) in browser after operation]' \
             {-t,--template=}'[Template to use for output]:TEMPLATE' \
             '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         epic)
@@ -824,7 +854,7 @@ function _jira() {
             case $words[1] in
               add)
                 _arguments \
-                  '1:<EPIC>' \
+                  '*:<EPIC>' \
                   '*:<ISSUE>'
                 ;;
               create)
@@ -855,7 +885,7 @@ function _jira() {
                   {-S,--status=}'[Filter on issue status]:STATUS' \
                   {-s,--sort=}'[Sort order to return]:SORT' \
                   {-w,--watcher=}'[Watcher to search for]:WATCHER' \
-                  '1:<EPIC>'
+                  '*:<EPIC>'
                 ;;
               remove)
                 _arguments \
@@ -887,7 +917,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         issuelink)
@@ -897,7 +927,7 @@ function _jira() {
             '--editor=[Editor to use]:EDITOR' \
             {-t,--template=}'[Template to export]:TEMPLATE' \
             {-m,--comment=}'[Comment message when linking issue]:COMMENT' \
-            '1:<OUTWARDISSUE>' \
+            '*:<OUTWARDISSUE>' \
             '2:<ISSUELINKTYPE>' \
             '3:<INWARDISSUE>'
           ;;
@@ -934,19 +964,19 @@ function _jira() {
               add)
                 _arguments \
                   {-b,--browse}'[Open issue(s) in browser after operation]' \
-                  '1:<ISSUE>' \
+                  '*:<ISSUE>' \
                   '*:<LABEL>'
                 ;;
               remove)
                 _arguments \
                   {-b,--browse}'[Open issue(s) in browser after operation]' \
-                  '1:<ISSUE>' \
+                  '*:<ISSUE>' \
                   '*:<LABEL>'
                 ;;
               set)
                 _arguments \
                   {-b,--browse}'[Open issue(s) in browser after operation]' \
-                  '1:<ISSUE>' \
+                  '*:<ISSUE>' \
                   '*:<LABEL>'
                 ;;
             esac
@@ -975,7 +1005,7 @@ function _jira() {
           _arguments \
             ": :{_describe 'global flags' global_flags}" \
             {-b,--browse}'[Open issue(s) in browser after operation]' \
-            '1:<FIRST-ISSUE>' \
+            '*:<FIRST-ISSUE>' \
             '2:where:(after before)' \
             '3:<SECOND-ISSUE>'
           ;;
@@ -989,7 +1019,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         request)
@@ -998,7 +1028,7 @@ function _jira() {
             {-t,--template=}':[Template to use for output]:TEMPLATE' \
             '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
             {-M,--method='[HTTP request method to use]:METHOD' \
-            '1:<API>' \
+            '*:<API>' \
             '2:[<JSON>]'
           ;;
 
@@ -1011,7 +1041,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         start)
@@ -1023,7 +1053,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         stop)
@@ -1035,7 +1065,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         subtask)
@@ -1048,7 +1078,7 @@ function _jira() {
             {-p,--project=}'[project to subtask issue in]:PROJECT' \
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         take)
@@ -1056,7 +1086,7 @@ function _jira() {
             ": :{_describe 'global flags' global_flags}" \
             {-b,--browse}'[Open issue(s) in browser after operation]' \
             '--default[use default user for assignee]' \
-            '1:<ISSUE>' \
+            '*:<ISSUE>' \
             '2:[<ASSIGNEE>]'
           ;;
 
@@ -1069,7 +1099,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         transition)
@@ -1081,7 +1111,7 @@ function _jira() {
             {-m,--comment=}'[Comment message for issue]:COMMENT' \
             {-o,--override=}'[Set issue property]:OVERRIDE' \
             '--resolution=[Set resolution on transition]:RESOLUTION' \
-            '1:<TRANSITION>' \
+            '*:<TRANSITION>' \
             '2:<ISSUE>'
           ;;
 
@@ -1091,7 +1121,7 @@ function _jira() {
             {-b,--browse}'[Open issue(s) in browser after operation]' \
             {-t,--template=}':[Template to use for output]:TEMPLATE' \
             '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         transmeta)
@@ -1100,7 +1130,7 @@ function _jira() {
             {-b,--browse}'[Open issue(s) in browser after operation]' \
             {-t,--template=}':[Template to use for output]:TEMPLATE' \
             '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         unassign)
@@ -1108,7 +1138,7 @@ function _jira() {
             ": :{_describe 'global flags' global_flags}" \
             {-b,--browse}'[Open issue(s) in browser after operation]' \
             '--default[use default user for assignee]' \
-            '1:<ISSUE>' \
+            '*:<ISSUE>' \
             '2:[<ASSIGNEE>]'
           ;;
 
@@ -1123,12 +1153,12 @@ function _jira() {
           _arguments \
             ": :{_describe 'global flags' global_flags}" \
             {-b,--browse}'[Open issue(s) in browser after operation]' \
-            {-t,--template=}'[Template to export]:TEMPLATE' \
+            {-t,--template=}"[Template to export]:template:_templates" \
             '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
             '--expand=[field to expand for the issue]:EXPAND' \
             '--field=[field to return for the issue]:FIELD' \
             '--property=[property to return for issue]:PROPERTY' \
-            '1:<ISSUE>'
+            "3:<ISSUE>"
           ;;
 
         vote)
@@ -1136,7 +1166,7 @@ function _jira() {
             ": :{_describe 'global flags' global_flags}" \
             {-b,--browse}'[Open issue(s) in browser after operation]' \
             {-d,--down}'[downvote the issue]' \
-            '1:<ISSUE>'
+            '*:<ISSUE>'
           ;;
 
         watch)
@@ -1144,7 +1174,7 @@ function _jira() {
             ": :{_describe 'global flags' global_flags}" \
             {-b,--browse}'[Open issue(s) in browser after operation]' \
             {-r,--remove}'[remove watcher from issue]' \
-            '1:<ISSUE>' \
+            '*:<ISSUE>' \
             '2:[<WATCHER>]'
           ;;
 
@@ -1170,14 +1200,14 @@ function _jira() {
                   {-m,--comment=}'[Comment message for worklog]:COMMENT' \
                   {-T,--time-spent=}'[Time spent working on issue]:TIME-SPENT' \
                   {-S,--started=}'[Time you started work]:STARTED' \
-                  '1:<ISSUE>'
+                  '*:<ISSUE>'
                 ;;
               list)
                 _arguments \
                   {-b,--browse}'[Open issue(s) in browser after operation]' \
                   {-t,--template=}':[Template to use for output]:TEMPLATE' \
                   '--gjq=[GJSON Query to filter output, see https://goo.gl/iaYwJ5]:GJQ' \
-                  '1:<ISSUE>'
+                  '*:<ISSUE>'
                 ;;
             esac
           ;;
