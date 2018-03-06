@@ -79,11 +79,13 @@ function _gb() {
   'test:test packages'
   )
 
-  if hash gb-vendor; then
+  # (( $+commands[gb-vendor] )) && commands+='vendor:manage your vendored dependencies'
+  # (( $+commands[gb-gae] )) && commands+='gae:tool for managing Google Appengine applications with gb.'
+  if hash gb-vendor > /dev/null 2>&1; then
     commands+='vendor:manage your vendored dependencies'
   fi
 
-  if hash gb-gae; then
+  if hash gb-gae > /dev/null 2>&1; then
     commands+='gae:tool for managing Google Appengine applications with gb.'
   fi
 
