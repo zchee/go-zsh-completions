@@ -42,3 +42,11 @@
     - sagacious k8s logs
 - [google/mtail](https://github.com/google/mtail)
     - extract whitebox monitoring data from application logs for collection in a timeseries database
+
+### lestrrat ware
+- [lestrrat-go/jwx/cmd/jwx](https://github.com/lestrrat-go//jwx/cmd/jwx)
+- [lestrrat-go/packasset/cmd/packasset](https://github.com/lestrrat-go/packasset/cmd/packasset)
+- [lestrrat-go/server-starter/cmd/start_server](https://github.com/lestrrat-go/server-starter/cmd/start_server)
+- [lestrrat-go/sharaq/cmd/sharaq](https://github.com/lestrrat-go/sharaq/cmd/sharaq)
+- [lestrrat-go/slack/cmd/slaproxy](https://github.com/lestrrat-go/slack/cmd/slaproxy)
+- [lestrrat-go/xslate/cli/xslate](https://github.com/lestrrat-go/xslate/cli/xslate)
