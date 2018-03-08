@@ -10,6 +10,7 @@
 - [github.com/heptio/sonobuoy](https://github.com/heptio/sonobuoy/tree/master)
 - [github.com/heptio/authenticator/cmd/heptio-authenticator-aws](https://github.com/heptio/ark/blob/master/cmd/heptio-authenticator-aws)
 - [github.com/google/mtail](https://github.com/google/mtail)
+- [GoogleCloudPlatform/skaffold: Easy and Repeatable Kubernetes Development](https://github.com/GoogleCloudPlatform/skaffold)
 
 ## Kubernetes tools
 - [shyiko/kubesec](https://github.com/shyiko/kubesec)
@@ -50,3 +51,17 @@
 - [lestrrat-go/sharaq/cmd/sharaq](https://github.com/lestrrat-go/sharaq/cmd/sharaq)
 - [lestrrat-go/slack/cmd/slaproxy](https://github.com/lestrrat-go/slack/cmd/slaproxy)
 - [lestrrat-go/xslate/cli/xslate](https://github.com/lestrrat-go/xslate/cli/xslate)
+
+
+## gcloud SDK CLI
+- bq
+- cbt
+- container-builder-local
+- datalab
+- dev_appserver.py
+- docker-credential-gcloud
+- docker-credential-gcr
+- endpointscfg.py
+- gcloud
+- git-credential-gcloud.sh
+- gsutil
