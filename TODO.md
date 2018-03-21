@@ -10,9 +10,12 @@
 - [github.com/heptio/sonobuoy](https://github.com/heptio/sonobuoy/tree/master)
 - [github.com/heptio/authenticator/cmd/heptio-authenticator-aws](https://github.com/heptio/ark/blob/master/cmd/heptio-authenticator-aws)
 - [github.com/google/mtail](https://github.com/google/mtail)
-- [GoogleCloudPlatform/skaffold: Easy and Repeatable Kubernetes Development](https://github.com/GoogleCloudPlatform/skaffold)
 
 ## Kubernetes tools
+- [GoogleCloudPlatform/skaffold](https://github.com/GoogleCloudPlatform/skaffold)
+    - Easy and Repeatable Kubernetes Development
+- [istio/istio](https://github.com/istio/istio)
+    - An open platform to connect, manage, and secure microservices.
 - [shyiko/kubesec](https://github.com/shyiko/kubesec)
     - Secure Secret management for Kubernetes (with gpg, Google Cloud KMS and AWS KMS backends)
 - [shyiko/kubetpl](https://github.com/shyiko/kubetpl)
